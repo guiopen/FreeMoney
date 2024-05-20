@@ -1,0 +1,23 @@
+{
+  "name": "backend-freemoney",
+  "version": "0.0.1",
+  "description": "Backend da aplicação FreeMoney",
+  "main": "server.js",
+  "scripts": {
+    "test": "test-server",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guiopen/FreeMoney.git"
+  },
+  "author": "Guilherme, Marina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guiopen/FreeMoney/issues"
+  },
+  "homepage": "https://github.com/guiopen/FreeMoney#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

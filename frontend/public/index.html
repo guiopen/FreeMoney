@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lista de Nomes</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de Nomes</h1>
+  <ul id="nomes"></ul>
+
+  <script>
+    fetch('/nomes')
+      .then(response => response.json())
+      .then(data => {
+        const listaNomes = document.getElementById('nomes');
+        data.forEach(nome => {
+          const itemLista = document.createElement('li');
+          itemLista.textContent = nome;
+          listaNomes.appendChild(itemLista);
+        });
+      });
+  </script>
+</body>
+</html>
