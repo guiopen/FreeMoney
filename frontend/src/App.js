@@ -1,8 +1,8 @@
 import React from 'react';
 // import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
-import LoginPage from './pages/Login/Login';
-import { AuthProvider, useAuth } from './pages/Login/AuthContext';
+import AuthPage from './pages/Authentication/AuthPage';
+import { AuthProvider, useAuth } from './pages/Authentication/AuthContext';
 // import Home from './pages/Home';
 // import Simulacoes from './pages/Simulacoes';
 // import Perfil from './pages/Perfil';
@@ -10,7 +10,7 @@ import { AuthProvider, useAuth } from './pages/Login/AuthContext';
 const AppContent = () => {
   const { isLoggedIn } = useAuth();
 
-  return isLoggedIn ? <Navbar /> : <LoginPage />;
+  return isLoggedIn ? <Navbar /> : <AuthPage />;
 };
 
 function App() {

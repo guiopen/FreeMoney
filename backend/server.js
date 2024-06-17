@@ -1,8 +1,10 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-const port = 3000;
+const port = 3001;
 
-app.use(express.static('../frontend/public'));
+app.use(bodyParser.json()); 
+app.use(express.static('../frontend/build'));
 
 // Importa as rotas do arquivo routes.js
 const router = require('./routes'); 
