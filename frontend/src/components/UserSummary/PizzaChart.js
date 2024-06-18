@@ -41,7 +41,6 @@ export default function PizzaChart() {
   const expensesData = {
     labels: Object.keys(expensesByCategory),
     datasets: [{
-      label: "Gastos",
       data: Object.values(expensesByCategory),
       borderWidth: 0,
       backgroundColor: Array(Object.keys(expensesByCategory).length).fill().map(() => generateRandomColor()),
@@ -52,10 +51,9 @@ export default function PizzaChart() {
   const incomesData = {
     labels: Object.keys(expensesByCategory),
     datasets: [{
-      label: "Receitas",
       data: Object.values(incomesByCategory),
       borderWidth: 0,
-      backgroundColor: Array(2).fill().map(() => generateRandomColor()),
+      backgroundColor: Array(Object.keys(incomesByCategory).length).fill().map(() => generateRandomColor()),
       hoverOffset: 4
     }]
   }
