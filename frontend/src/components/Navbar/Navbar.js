@@ -1,16 +1,7 @@
-import { Fragment } from 'react';
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  Transition,
-} from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon, HomeIcon, ChartBarIcon, UserIcon } from '@heroicons/react/24/solid';
-import logo from '../../assets/images/FreeMoney-logo.png'; // Ajuste o caminho conforme necessário
+// src/components/Navbar.js
+import { Disclosure } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon, HomeIcon, ChartBarIcon, UserIcon } from '@heroicons/react/24/solid';
+import logo from '../../assets/images/FreeMoney-logo.png';
 
 const navigation = [
   { name: 'Resumo', href: '/', current: true, icon: HomeIcon, color: 'text-black' },
@@ -30,14 +21,13 @@ export default function Navbar() {
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-24 items-center justify-between">
               <div className="inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button */}
-                <DisclosureButton className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 focus:text-project-blue">
+                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 focus:text-project-blue">
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
                     <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                   )}
-                </DisclosureButton>
+                </Disclosure.Button>
               </div>
               <div className="sm:absolute flex flex-shrink-0 items-center">
                 <img className="h-20 w-20" src={logo} alt="Logo" />
@@ -64,10 +54,10 @@ export default function Navbar() {
             </div>
           </div>
 
-          <DisclosurePanel className="sm:hidden">
+          <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
-                <DisclosureButton
+                <Disclosure.Button
                   key={item.name}
                   as="a"
                   href={item.href}
@@ -77,10 +67,10 @@ export default function Navbar() {
                   aria-current={item.current ? 'page' : undefined}
                 >
                   {item.name}
-                </DisclosureButton>
+                </Disclosure.Button>
               ))}
             </div>
-          </DisclosurePanel>
+          </Disclosure.Panel>
         </>
       )}
     </Disclosure>

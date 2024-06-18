@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         'project-blue': '#3298ab',
         'project-hover-blue': '#8eceda',
+        'background-blue': '#D8FDFF',
       },
     },
   },
