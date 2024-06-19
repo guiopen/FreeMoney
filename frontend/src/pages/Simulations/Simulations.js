@@ -1,45 +1,66 @@
-// src/pages/Simulations/Simulations.js
 import React, { useState } from 'react';
+import Investments from './Investments';
+import Loans from './Loans';
+
+const SIMULATION_COMPONENT = {
+    INVESTMENTS: 'investments',
+    LOANS: 'loans'
+};
 
 function Simulations() {
-  const [idadeAtual, setIdadeAtual] = useState('');
-  const [patrimonioAtual, setPatrimonioAtual] = useState('');
-  const [idadeAposentadoria, setIdadeAposentadoria] = useState('');
-  const [rendimentoDesejado, setRendimentoDesejado] = useState('');
-  const [resultado, setResultado] = useState('');
+    const [currentSimulationComponent, setCurrentSimulationComponent] = useState(SIMULATION_COMPONENT.INVESTMENTS);
+    const [resultado, setResultado] = useState('');
 
-  const handleSimulate = () => {
-    if (idadeAtual && patrimonioAtual && idadeAposentadoria && rendimentoDesejado) {
-      setResultado('Resultado da simulação');
-    } else {
-      setResultado('Por favor, preencha todos os campos corretamente');
-    }
-  };
+    const handleSimulate = (resultadoSimulacao) => {
+        setResultado(resultadoSimulacao);
+    };
 
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-full md:w-1/2 p-4">
-        <div className="mb-4">
-          <label htmlFor="idadeAtual" className="block text-sm font-medium text-gray-700">Idade atual</label>
-          <input type="number" id="idadeAtual" value={idadeAtual} onChange={(e) => setIdadeAtual(e.target.value)} className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+    return (
+        <div className='flex justify-center items-center h-screen bg-[#D8FDFF]'>
+            <div className='bg-white w-4/5 md:w-3/5 shadow-md rounded-lg flex justify-between mx-auto mt-20 max-w-3xl flex flex-col lg:flex-row'>
+                <div className='p-4 md:p-8 w-full lg:w-1/2'>
+                    <div className="flex justify-center mb-6 space-x-6 mx-8">
+                        <button
+                            type="button"
+                            onClick={() => setCurrentSimulationComponent(SIMULATION_COMPONENT.INVESTMENTS)}
+                            className={
+                                currentSimulationComponent === SIMULATION_COMPONENT.INVESTMENTS ?
+                                    "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
+                                    "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
+                            }
+                        >
+                            Investimentos
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setCurrentSimulationComponent(SIMULATION_COMPONENT.LOANS)}
+                            className={
+                                currentSimulationComponent === SIMULATION_COMPONENT.LOANS ?
+                                    "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
+                                    "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
+                            }
+                        >
+                            Empréstimos
+                        </button>
+                    </div>
+                    {
+                        currentSimulationComponent === SIMULATION_COMPONENT.INVESTMENTS
+                            ? <Investments onSimulate={handleSimulate} />
+                            : <Loans onSimulate={handleSimulate} />
+                    }
+                </div>
+                <div className="relative flex items-center">
+                    <div className="hidden lg:block w-0.5 h-2/3 bg-project-blue mx-4"></div> 
+                </div>
+                <div className='p-8 w-full lg:w-1/2 flex items-center justify-center text-center'>
+                    {resultado 
+                        ? <div className="text-project-blue">{resultado}</div>
+                        : <div className="text-project-blue">Aqui aparecerá o resultado da sua simulação</div>
+                    }
+                </div>
+            </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="patrimonioAtual" className="block text-sm font-medium text-gray-700">Patrimônio investido atualmente</label>
-          <input type="number" id="patrimonioAtual" value={patrimonioAtual} onChange={(e) => setPatrimonioAtual(e.target.value)} className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="idadeAposentadoria" className="block text-sm font-medium text-gray-700">Idade que deseja se aposentar</label>
-          <input type="number" id="idadeAposentadoria" value={idadeAposentadoria} onChange={(e) => setIdadeAposentadoria(e.target.value)} className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="rendimentoDesejado" className="block text-sm font-medium text-gray-700">Rendimento mensal desejado</label>
-          <input type="number" id="rendimentoDesejado" value={rendimentoDesejado} onChange={(e) => setRendimentoDesejado(e.target.value)} className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-        </div>
-        <button onClick={handleSimulate} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Simular</button>
-        <div className="mt-4 text-gray-700">{resultado}</div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Simulations;

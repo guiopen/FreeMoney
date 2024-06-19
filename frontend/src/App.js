@@ -5,7 +5,7 @@ import Simulations from './pages/Simulations/Simulations.js';
 
 function App() {
   return (
-    <div className="App bg-background-blue">
+    <div className="App bg-background-blue h-screen">
       <Router>
         <Navbar />
         <Routes>
