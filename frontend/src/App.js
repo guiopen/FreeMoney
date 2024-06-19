@@ -1,11 +1,11 @@
 import React from 'react';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import AuthPage from './pages/Authentication/AuthPage';
 import { AuthProvider, useAuth } from './pages/Authentication/AuthContext';
-// import Home from './pages/Home';
-// import Simulacoes from './pages/Simulacoes';
-// import Perfil from './pages/Perfil';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar.js';
+import Simulations from './pages/Simulations/Simulations.js';
+
 
 const AppContent = () => {
   const { isLoggedIn } = useAuth();
@@ -15,17 +15,16 @@ const AppContent = () => {
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-background-blue h-screen">
       <AuthProvider>
         <AppContent />
       </AuthProvider>
-       {/*<Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/simulacoes" element={<Simulacoes />} />
-        <Route path="/perfil" element={<Perfil />} />
-      </Routes>
-  </Router>*/}
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/simulacoes" element={<Simulations />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
