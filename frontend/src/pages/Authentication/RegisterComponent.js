@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { useAuth } from './AuthContext';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { sendRegisterCommand } from './utils/registerUtils';
 
 const RegisterComponent = () => {
-  const { login } = useAuth();
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -22,8 +21,29 @@ const RegisterComponent = () => {
           .required('Confirmação de senha obrigatória'),
       })}
       onSubmit={(values, { setSubmitting }) => {
-        sendRegisterCommand(values, setSubmitting)
+        sendRegisterCommand(values)
+        .then(response => {
+          console.log(response)
+          if (response.ok) {
+            setErrorMessage('')
+            response.json().then(success => setSuccessMessage(success.message));
+          } else {
+            setSuccessMessage('')
+            response.json()
+            .then(error => setErrorMessage(error.message))
+            .catch(jsonError => {setErrorMessage("Erro no servidor"); console.log(jsonError)});
+          }
+        })
+        .catch(error => {
+          console.log(error)
+          setSuccessMessage('')
+          setErrorMessage("Erro ao cadastrar usuário");
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
       }}
+
     >
       {formik => (
         <Form>
@@ -73,7 +93,8 @@ const RegisterComponent = () => {
               Cadastro
             </button>
           </div>
-          {errorMessage && <div className="text-red-500 text-sm mt-2">{errorMessage}</div>}
+          {errorMessage && <div className="text-red-500 text-lg mt-2">{errorMessage}</div>}
+          {successMessage && <div className="text-green-700 text-lg mt-2">{successMessage}</div>}
         </Form>
       )}
     </Formik>

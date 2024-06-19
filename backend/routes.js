@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+// rota exemplo com os nomes dos integrantes do grupo
 router.get('/nomes', (req, res) => {
   const nomes = ["Guilherme", "Olavo", "Marina", "Alexandre", "Jilliard"];
   res.json(nomes);
@@ -10,23 +11,20 @@ router.get('/nomes', (req, res) => {
 let users = [];
 router.post('/register', (req, res) => {
   const { email, password } = req.body;
-  console.log("/REGISTER CHAMADO", email, password)
-  // Validação básica (ajuste conforme necessário)
+
   if (!email || !password) {
-    return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+    return res.status(400).json({ message: 'Email e senha são obrigatórios' });
   }
 
   // Verificar se o email já está cadastrado
   const existingUser = users.find(user => user.email === email);
   if (existingUser) {
-    return res.status(400).json({ error: 'Email já cadastrado' });
+    return res.status(400).json({ message: 'Email já cadastrado' });
   }
 
-  // Criar novo usuário
   const newUser = { email, password };
   users.push(newUser);
 
-  // Retornar sucesso (opcionalmente, retornar dados do novo usuário)
   res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
 });
 
