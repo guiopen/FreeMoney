@@ -7,13 +7,14 @@ import {
   Chart as ChartJS,
   LinearScale,
   PointElement,
-  LineElement
+  LineElement,
+  Tooltip
 } from 'chart.js';
 
 export default function LineChart() {
   const [selected, setSelected] = useState("expenses")
 
-  ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
+  ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
   function handleSelect(ev) {
     setSelected(ev.target.value)
@@ -85,7 +86,7 @@ export default function LineChart() {
           className="mx-auto mt-3 max-w-64 sm:max-w-96 md:max-w-[600px]"
           id="0"
           data={selected === "expenses" ? expensesData : incomesData}
-          options={{ responsive: false, devicePixelRatio: 10 }}
+          options={{ plugins: { tooltip: { enabled: true, position: "nearest" } } }}
           style={{ width: "100%" }}
         />
       </div>

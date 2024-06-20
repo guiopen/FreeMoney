@@ -5,7 +5,8 @@ import { useState } from "react"
 import {
   CategoryScale,
   Chart as ChartJS,
-  ArcElement
+  ArcElement,
+  Tooltip
 } from 'chart.js';
 
 export default function PizzaChart() {
@@ -16,7 +17,7 @@ export default function PizzaChart() {
     setSelected(ev.target.value)
   }
 
-  ChartJS.register(CategoryScale, ArcElement);
+  ChartJS.register(CategoryScale, ArcElement, Tooltip);
 
   const generateRandomColor = () => {
     const letters = '0123456789ABCDEF';
@@ -83,8 +84,8 @@ export default function PizzaChart() {
       </div>
       <div>
         <Doughnut data={selected === "expenses" ? expensesData : incomesData}
-          className="mx-auto mt-3 max-w-64 sm:max-w-96 md:max-w-[600px]"
-          options={{ responsive: false, devicePixelRatio: 10 }}
+          className="mx-auto mt-3 max-w-64 sm:max-w-96 md:max-w-[400px]"
+          options={{ plugins: { tooltip: { enabled: true, position: "nearest" } } }}
           style={{ width: "100%" }}
         />
       </div>
