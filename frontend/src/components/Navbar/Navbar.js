@@ -1,4 +1,3 @@
-// src/components/Navbar.js
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, HomeIcon, ChartBarIcon, UserIcon } from '@heroicons/react/24/solid';
 import logo from '../../assets/images/FreeMoney-logo.png';
