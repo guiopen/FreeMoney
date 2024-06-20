@@ -15,6 +15,11 @@ function Simulations() {
         setResultado(resultadoSimulacao);
     };
 
+    const handleComponentChange = (component) => {
+        setCurrentSimulationComponent(component);
+        setResultado(''); // Limpar o resultado ao trocar de componente
+    };
+
     return (
         <div className='flex justify-center items-center h-screen bg-[#D8FDFF]'>
             <div className='bg-white w-4/5 md:w-3/5 shadow-md rounded-lg flex justify-between mx-auto mt-20 max-w-3xl flex flex-col lg:flex-row'>
@@ -22,7 +27,7 @@ function Simulations() {
                     <div className="flex justify-center mb-6 space-x-6 mx-8">
                         <button
                             type="button"
-                            onClick={() => setCurrentSimulationComponent(SIMULATION_COMPONENT.INVESTMENTS)}
+                            onClick={() => handleComponentChange(SIMULATION_COMPONENT.INVESTMENTS)}
                             className={
                                 currentSimulationComponent === SIMULATION_COMPONENT.INVESTMENTS ?
                                     "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
@@ -33,7 +38,7 @@ function Simulations() {
                         </button>
                         <button
                             type="button"
-                            onClick={() => setCurrentSimulationComponent(SIMULATION_COMPONENT.LOANS)}
+                            onClick={() => handleComponentChange(SIMULATION_COMPONENT.LOANS)}
                             className={
                                 currentSimulationComponent === SIMULATION_COMPONENT.LOANS ?
                                     "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
