@@ -1,7 +1,6 @@
 import { useState } from "react"
 import Radio from "./Radio"
 import { Line } from 'react-chartjs-2';
-import fakeTransactions from "../../data/fakeTransactions";
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -11,7 +10,7 @@ import {
   Tooltip
 } from 'chart.js';
 
-export default function LineChart() {
+export default function LineChart({ transactions }) {
   const [selected, setSelected] = useState("expenses")
 
   ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
@@ -20,7 +19,7 @@ export default function LineChart() {
     setSelected(ev.target.value)
   }
 
-  const expensesByMonth = fakeTransactions
+  const expensesByMonth = transactions
     .reduce((obj, transaction) => {
       const month = transaction.date.getMonth()
       if (transaction.expense) {
@@ -29,7 +28,7 @@ export default function LineChart() {
       return obj
     }, { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 })
 
-  const incomesByMonth = fakeTransactions
+  const incomesByMonth = transactions
     .reduce((obj, transaction) => {
       const month = transaction.date.getMonth()
       if (!transaction.expense) {

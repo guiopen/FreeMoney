@@ -1,27 +1,10 @@
 // import { useEffect, useState } from "react"
-import fakeTransactions from "../../data/fakeTransactions"
+// import fakeTransactions from "../../data/fakeTransactions"
 
-export default function TransactionHistories() {
-  // const [transactions, setTransactions] = useState(fakeTransactions)
-
-  // useEffect(() => {
-  // async function fetchTransactions() {
-  //   fetch("/transactions")
-  //     .then(res => {
-  //       if (!res.ok) {
-  //         throw new Error("Erro na requisição!")
-  //       }
-  //       return res.json()
-  //     })
-  //     .then(json => setTransactions(json))
-  //     .catch(e => console.error(e, "Fetch error"))
-  // }
-
-  // fetchTransactions()
-  // }, [transactions])
+export default function TransactionHistories({ transactions }) {
 
   function renderTransactions() {
-    return fakeTransactions.map(t => true ? (
+    return transactions.map(t => true ? (
       <tr key={t.id} className={`border-zinc-200 border-t border-solid text-sm mx-2
         ${t.expense ? "text-red-400" : "text-green-400"}`}
       >

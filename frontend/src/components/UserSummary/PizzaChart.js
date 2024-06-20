@@ -1,5 +1,4 @@
 import Radio from "./Radio"
-import fakeTransactions from "../../data/fakeTransactions";
 import { Doughnut } from 'react-chartjs-2';
 import { useState } from "react"
 import {
@@ -9,7 +8,7 @@ import {
   Tooltip
 } from 'chart.js';
 
-export default function PizzaChart() {
+export default function PizzaChart({ transactions }) {
 
   const [selected, setSelected] = useState("expenses")
 
@@ -31,7 +30,7 @@ export default function PizzaChart() {
   const expensesByCategory = {};
   const incomesByCategory = {};
 
-  fakeTransactions.forEach((transaction) => {
+  transactions.forEach((transaction) => {
     if (transaction.expense) {
       expensesByCategory[transaction.category] = (expensesByCategory[transaction.category] ?? 0) + transaction.value;
     } else {
@@ -50,7 +49,7 @@ export default function PizzaChart() {
   }
 
   const incomesData = {
-    labels: Object.keys(expensesByCategory),
+    labels: Object.keys(incomesByCategory),
     datasets: [{
       data: Object.values(incomesByCategory),
       borderWidth: 0,
