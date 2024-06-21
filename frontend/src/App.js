@@ -7,7 +7,8 @@ import Simulations from './pages/Simulations/Simulations.js';
 
 
 const AppContent = () => {
-  const { isLoggedIn } = useAuth();
+  /*const { isLoggedIn } = useAuth();*/
+  const isLoggedIn = true;
   return isLoggedIn ? <Navbar /> : <AuthPage />;
 };
 
@@ -15,13 +16,13 @@ function App() {
   return (
     <div className="App bg-background-blue h-screen">
       <AuthProvider>
-        <AppContent />
-      </AuthProvider>
       <Router>
+      <AppContent />
         <Routes>
           <Route path="/simulacoes" element={<Simulations />} />
         </Routes>
       </Router>
+      </AuthProvider>
     </div>
   );
 }

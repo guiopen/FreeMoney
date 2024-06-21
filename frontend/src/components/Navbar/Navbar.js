@@ -1,5 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, HomeIcon, ChartBarIcon, UserIcon } from '@heroicons/react/24/solid';
+import { Link } from 'react-router-dom';
 import logo from '../../assets/images/FreeMoney-logo.png';
 
 const navigation = [
@@ -35,9 +36,9 @@ export default function Navbar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-8">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           'text-black hover:text-project-blue flex flex-col items-center rounded-md px-3 py-2 text-sm font-medium'
                         )}
@@ -45,7 +46,7 @@ export default function Navbar() {
                       >
                         <item.icon className="h-6 w-6" aria-hidden="true" />
                         <span>{item.name}</span>
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -58,8 +59,8 @@ export default function Navbar() {
               {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
-                  as="a"
-                  href={item.href}
+                  as={Link}
+                  to={item.href}
                   className={classNames(
                     'block rounded-md px-3 py-2 text-base font-medium text-black hover:text-project-blue focus:text-project-blue'
                   )}
