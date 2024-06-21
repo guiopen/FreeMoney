@@ -7,8 +7,7 @@ import Simulations from './pages/Simulations/Simulations.js';
 
 
 const AppContent = () => {
-  /*const { isLoggedIn } = useAuth();*/
-  const isLoggedIn = true;
+  const { isLoggedIn } = useAuth();
   return isLoggedIn ? <Navbar /> : <AuthPage />;
 };
 
