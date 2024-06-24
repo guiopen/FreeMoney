@@ -6,12 +6,18 @@ import Navbar from './components/Navbar/Navbar.js';
 import Simulations from './pages/Simulations/Simulations.js';
 import UserProfile from './pages/Profile/UserProfile.js';
 import './App.css';
+import Summary from './pages/UserSummary/Summary.js';
 
 
 const AppContent = () => {
-  /*const { isLoggedIn } = useAuth();*/
-  const isLoggedIn = true;
-  return isLoggedIn ? <Navbar /> : <AuthPage />;
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? (
+    <>
+      <Navbar />
+      <Summary />
+    </>
+  )
+    : <AuthPage />;
 };
 
 function App() {
