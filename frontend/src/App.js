@@ -4,11 +4,18 @@ import { AuthProvider, useAuth } from './pages/Authentication/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar.js';
 import Simulations from './pages/Simulations/Simulations.js';
+import Summary from './pages/UserSummary/Summary.js';
 
 
 const AppContent = () => {
   const { isLoggedIn } = useAuth();
-  return isLoggedIn ? <Navbar /> : <AuthPage />;
+  return isLoggedIn ? (
+    <>
+      <Navbar />
+      <Summary />
+    </>
+  )
+    : <AuthPage />;
 };
 
 function App() {
