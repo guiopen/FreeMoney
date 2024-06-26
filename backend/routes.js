@@ -3,18 +3,17 @@ const { MongoClient } = require('mongodb');
 const router = express.Router();
 
 // Configuração da URL de conexão do MongoDB
-const url = 'mongodb://localhost:27017';
-const dbName = 'freeMoneyDb';
-let db;
+const mongoURL = "mongodb+srv://free:money@freemoneycluster.fzca9rk.mongodb.net/?retryWrites=true&w=majority&appName=FreeMoneyCluster";
+const dbName = "freeMoneyDb";
+let database;
 
-MongoClient.connect(url, { useUnifiedTopology: true })
+MongoClient.connect(mongoURL, { useUnifiedTopology: true })
   .then(client => {
     console.log("Conectado ao MongoDB");
-    db = client.db(dbName);
+    database = client.db(dbName);
   })
   .catch(error => console.error(error));
 
-// rota exemplo com os nomes dos integrantes do grupo
 router.get('/nomes', (req, res) => {
   const nomes = ["Guilherme", "Olavo", "Marina", "Alexandre", "Jilliard"];
   res.json(nomes);
@@ -29,7 +28,7 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-    const usersCollection = db.collection('users');
+    const usersCollection = database.collection('users');
 
     // Verificar se o email já está cadastrado
     const existingUser = await usersCollection.findOne({ email });
