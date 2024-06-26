@@ -86,7 +86,7 @@ function UserProfile() {
                 <p><strong>Data de Nascimento:</strong> {user.dataNascimento}</p>
                 <p><strong>Email:</strong> {user.email}</p>
                 <p><strong>Senha:</strong> {user.senha}</p>
-                <button className="btn btn-edit mt-4" onClick={openEditModal}>
+                <button className="btn-edit" onClick={openEditModal}>
                   <FaEdit size={20}/>
                 </button>
               </>

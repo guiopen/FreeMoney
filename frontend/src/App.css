@@ -14,13 +14,16 @@ body {
 }
 
 .btn-edit {
-  background-color: #3298AB;
+  position: absolute;
+  top: 20px;
+  right: 20px;
   border: none;
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  color: #3298AB;
 }
 
 .btn-edit img {
@@ -44,15 +47,6 @@ body {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
-}
-
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
 }
 
 .bg-project-blue {
@@ -83,4 +77,5 @@ body {
   position: absolute;
   top: 20px;
   right: 20px;
+  color: #3298AB;
 }
