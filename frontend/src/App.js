@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Profiler } from 'react';
 import AuthPage from './pages/Authentication/AuthPage';
 import { AuthProvider, useAuth } from './pages/Authentication/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar.js';
 import Simulations from './pages/Simulations/Simulations.js';
-import Profile from './pages/Profile.js';
+import UserProfile from './pages/Profile';
+import './App.css';
 
 
 const AppContent = () => {
@@ -22,7 +23,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/simulacoes" element={<Simulations />} />
-          <Route path="/perfil" element={<Profile />} />
+          <Route path="/perfil" element={<UserProfile />} />
         </Routes>
       </Router>
     </div>
