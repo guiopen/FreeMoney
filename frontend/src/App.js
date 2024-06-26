@@ -12,7 +12,6 @@ const AppContent = () => {
   return isLoggedIn ? (
     <>
       <Navbar />
-      <Summary />
     </>
   )
     : <AuthPage />;
@@ -26,6 +25,7 @@ function App() {
       </AuthProvider>
       <Router>
         <Routes>
+          <Route path="/" element={<Summary />} />
           <Route path="/simulacoes" element={<Simulations />} />
         </Routes>
       </Router>
