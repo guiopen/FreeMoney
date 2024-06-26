@@ -62,3 +62,25 @@ body {
 .text-project-blue {
   color: #3298AB;
 }
+
+.text-project-blue:hover {
+  color: black;
+}
+
+.border-project-blue {
+  border-color: #3298AB;
+}
+
+.border-project-blue:hover {
+  border-color: black;
+}
+
+.transition-colors {
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.btn-add-friend {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
