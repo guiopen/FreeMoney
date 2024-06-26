@@ -6,7 +6,7 @@ export default function TransactionHistories({ transactions }) {
   function renderTransactions() {
     return transactions.map(t => true ? (
       <tr key={t.id} className={`border-zinc-200 border-t border-solid text-sm mx-2
-        ${t.expense ? "text-red-400" : "text-green-400"}`}
+        ${t.expense ? "text-red-600" : "text-green-600"}`}
       >
         <td>{t.title}</td>
         <td>{t.date.toLocaleDateString().substring(0, 5)}</td>

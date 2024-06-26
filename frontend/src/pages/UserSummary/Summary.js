@@ -22,7 +22,7 @@ export default function Summary() {
   // fetchTransactions()
   // }, [transactions])
   return (
-    <div className="bg-[#D8FDFF] w-full h-full min-h-[calc(100vh-96px)]">
+    <div className="bg-[#D8FDFF] w-full min-h-[calc(100vh-96px)]">
       <div className="w-full py-12 px-4 lg:px-8
         flex flex-col lg:flex-row justify-center gap-8
         max-w-[1024px] mx-auto
