@@ -13,24 +13,6 @@ body {
   margin-bottom: 10px;
 }
 
-.btn-edit {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  color: #3298AB;
-}
-
-.btn-edit img {
-  width: 20px;
-  height: 20px;
-}
-
 .modal {
   position: fixed;
   top: 0;
@@ -73,9 +55,11 @@ body {
   transition: color 0.3s, border-color 0.3s;
 }
 
-.btn-add-friend {
+.btn {
   position: absolute;
   top: 20px;
   right: 20px;
   color: #3298AB;
+  cursor: pointer;
+
 }

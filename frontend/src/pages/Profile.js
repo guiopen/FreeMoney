@@ -86,14 +86,14 @@ function UserProfile() {
                 <p><strong>Data de Nascimento:</strong> {user.dataNascimento}</p>
                 <p><strong>Email:</strong> {user.email}</p>
                 <p><strong>Senha:</strong> {user.senha}</p>
-                <button className="btn-edit" onClick={openEditModal}>
+                <button className="btn" onClick={openEditModal}>
                   <FaEdit size={20}/>
                 </button>
               </>
             )}
             {activeTab === 'amigos' && (
               <>
-                <button className="btn-add-friend" onClick={openAddFriendModal}>
+                <button className="btn" onClick={openAddFriendModal}>
                   <FaPlus size={20} />
                 </button>
                 <div>
