@@ -11,12 +11,24 @@ import Summary from './pages/UserSummary/Summary.js';
 
 const AppContent = () => {
   const { isLoggedIn } = useAuth();
-  return isLoggedIn ? (
-    <>
+  if (isLoggedIn) {
+    return (
+      <>
       <Navbar />
-    </>
-  )
-    : <AuthPage />;
+      <Router>
+        <Routes>
+          <Route path="/" element={<Summary />} />
+          <Route path="/simulacoes" element={<Simulations />} />
+          <Route path="/perfil" element={<UserProfile />} />
+        </Routes>
+      </Router>
+      </>
+    )
+  } else {
+    return (
+      <AuthPage />
+    )
+  }
 };
 
 function App() {
@@ -25,13 +37,6 @@ function App() {
       <AuthProvider>
         <AppContent />
       </AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Summary />} />
-          <Route path="/simulacoes" element={<Simulations />} />
-          <Route path="/perfil" element={<UserProfile />} />
-        </Routes>
-      </Router>
     </div>
   );
 }

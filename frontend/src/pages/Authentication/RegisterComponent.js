@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { sendRegisterCommand } from './utils/registerUtils';
+import { sendRegisterCommand } from '../../endpoint';
 
 const RegisterComponent = () => {
   const [errorMessage, setErrorMessage] = useState('');
@@ -12,8 +12,9 @@ const RegisterComponent = () => {
 
   return (
     <Formik
-      initialValues={{ email: '', password: '', confirmPassword: '' }}
+      initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
       validationSchema={Yup.object({
+        name: Yup.string().required('Obrigatório'),
         email: Yup.string().email('Formato de e-mail inválido').required('Obrigatório'),
         password: Yup.string().required('Obrigatório'),
         confirmPassword: Yup.string()
@@ -23,15 +24,18 @@ const RegisterComponent = () => {
       onSubmit={(values, { setSubmitting }) => {
         sendRegisterCommand(values)
         .then(response => {
-          console.log(response)
+          const isJson = response.headers.get('Content-Type')?.includes('application/json');
           if (response.ok) {
             setErrorMessage('')
             response.json().then(success => setSuccessMessage(success.message));
           } else {
             setSuccessMessage('')
-            response.json()
-            .then(error => setErrorMessage(error.message))
-            .catch(jsonError => {setErrorMessage("Erro no servidor"); console.log(jsonError)});
+            if (isJson) {
+              response.json()
+              .then(error => setErrorMessage(error.message))
+            } else {
+              setErrorMessage("Erro no servidor")
+            }
           }
         })
         .catch(error => {
@@ -47,6 +51,16 @@ const RegisterComponent = () => {
     >
       {formik => (
         <Form>
+          <div className="mb-4 relative">
+            <Field
+              type="text"
+              id="name"
+              name="name"
+              className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-blue-200"
+              placeholder='Nome'
+            />
+            <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
+          </div>
           <div className="mb-4 relative">
             <Field
               type="email"
