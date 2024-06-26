@@ -7,47 +7,42 @@ import useWindowSize from '../../hooks/useWindowSize';
 const AUTH_COMPONENT = {
     LOGIN: 'login',
     REGISTER: 'register'
-} 
+}
 
 const AuthPage = () => {
-    const {windowWidth, windowHeight} = useWindowSize()
-    const [currentAuthComponent, setCurrentAuthComponent] = useState(AUTH_COMPONENT.LOGIN)
+    const { windowWidth, windowHeight } = useWindowSize();
+    const [currentAuthComponent, setCurrentAuthComponent] = useState(AUTH_COMPONENT.LOGIN);
 
     return (
-        <div className="flex justify-between items-center h-screen bg-[#D8FDFF] ">
-            <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md ml-40">
-                <div className="flex justify-between mb-6 space-x-2 mx-8">
+        <div className="flex flex-col lg:flex-row justify-between items-center h-screen bg-[#D8FDFF] p-4 lg:p-0">
+            <div className="flex-1 w-full max-w-md bg-white p-8 rounded-lg shadow-md lg:ml-100 xl:ml-200 mx-auto lg:mx-0 min-w-[300px]">
+                <div className="flex justify-between mb-6 space-x-2">
                     <button
                         type="button"
                         onClick={() => setCurrentAuthComponent(AUTH_COMPONENT.REGISTER)}
                         className={
-                            currentAuthComponent == AUTH_COMPONENT.REGISTER ?
-                            "text-lg font-bold text-[#3298AB] border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors ml-20" :
-                            "text-lg font-bold hover:text-[#3298AB] transition-colors ml-20"
+                            currentAuthComponent === AUTH_COMPONENT.REGISTER ?
+                                "text-lg font-bold text-[#3298AB] border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
+                                "text-lg font-bold hover:text-[#3298AB] transition-colors"
                         }
                     >
-                        Cadastar
+                        Cadastrar
                     </button>
-                    <div className='mr-20'>
-                        <button
-                            type="button"
-                            onClick={() => setCurrentAuthComponent(AUTH_COMPONENT.LOGIN)}
-                            className={
-                                currentAuthComponent == AUTH_COMPONENT.LOGIN ?
-                                "text-lg font-bold text-[#3298AB] border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors mr-20" :
-                                "text-lg font-bold hover:text-[#3298AB] transition-colors mr-20"
-                            }
-                        >
-                            Entrar
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setCurrentAuthComponent(AUTH_COMPONENT.LOGIN)}
+                        className={
+                            currentAuthComponent === AUTH_COMPONENT.LOGIN ?
+                                "text-lg font-bold text-[#3298AB] border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
+                                "text-lg font-bold hover:text-[#3298AB] transition-colors"
+                        }
+                    >
+                        Entrar
+                    </button>
                 </div>
-                {
-                currentAuthComponent == AUTH_COMPONENT.LOGIN
-                ? <LoginComponent />
-                : <RegisterComponent />
-                }
+                {currentAuthComponent === AUTH_COMPONENT.LOGIN ? <LoginComponent /> : <RegisterComponent />}
             </div>
+            <div className="h-80 border-l border-black mr-40 ml-40 hidden lg:block"></div>
             <Logo />
         </div>
     );
