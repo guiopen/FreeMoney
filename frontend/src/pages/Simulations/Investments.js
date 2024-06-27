@@ -2,7 +2,6 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-
 const validationSchema = yup.object({
     idadeAtual: yup.number().typeError('O valor inserido deve ser um número inteiro').required('Campo obrigatório').min(0, 'Valor não pode ser negativo'),
     idadeAposentadoria: yup.number().typeError('O valor inserido deve ser um número inteiro').required('Campo obrigatório').min(yup.ref('idadeAtual'), 'Idade de aposentadoria deve ser maior que a idade atual'),
@@ -11,8 +10,10 @@ const validationSchema = yup.object({
     rendimentoDesejado: yup.number().typeError('O valor inserido deve ser um número inteiro').required('Campo obrigatório').min(0, 'Valor não pode ser negativo').max(100, 'Valor deve ser em porcentagem'),
 });
 
-const calcularAporteNecessario = (idadeAtual, idadeAposentadoria, patrimonioAtual, patrimonioDesejado, taxaRendimentoMensal) => {
+const calcularAporteNecessario = (idadeAtual, idadeAposentadoria, patrimonioAtual, patrimonioDesejado, taxaRendimentoAnual) => {
     const t = (idadeAposentadoria - idadeAtual) * 12;
+
+    const taxaRendimentoMensal = Math.pow(1 + taxaRendimentoAnual / 100, 1 / 12) - 1;
 
     if (patrimonioAtual * Math.pow((1 + taxaRendimentoMensal), t) >= patrimonioDesejado) {
         return 'Seu patrimônio atual já é suficiente para alcançar o patrimônio desejado com os juros compostos.';
@@ -42,7 +43,7 @@ const Investments = ({ onSimulate }) => {
             const idadeAposentadoriaNum = parseInt(idadeAposentadoria);
             const patrimonioAtualNum = parseFloat(patrimonioAtual);
             const patrimonioDesejadoNum = parseFloat(patrimonioDesejado);
-            const rendimentoDesejadoNum = parseFloat(rendimentoDesejado) / 100;
+            const rendimentoDesejadoNum = parseFloat(rendimentoDesejado);
 
             const resultado = calcularAporteNecessario(
                 idadeAtualNum,
