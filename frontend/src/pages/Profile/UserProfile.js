@@ -46,38 +46,37 @@ function UserProfile() {
   return (
     <div className="flex justify-center items-center h-screen bg-[#D8FDFF]">
       <div className="bg-white w-4/5 md:w-2/5 shadow-md rounded-lg flex justify-between mx-auto mt-20 max-w-3xl flex flex-col relative">
-      <div className='p-4 md:p-8 w-full'>
-        <div className="flex justify-center mb-6 space-x-6 mx-8">
-          <button
-            type="button"
-            onClick={switchToProfile}
-            className={
-              activeTab === 'perfil' ?
-                "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
-                "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
-            }
-          >
-            Seu Perfil
-          </button>
-          <button
-            type="button"
-            onClick={switchToFriends}
-            className={
-              activeTab === 'amigos' ?
-                "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
-                "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
-            }
-          >
-            Amigos
-          </button>
+        <div className='p-4 md:p-8 w-full'>
+          <div className="flex justify-center mb-6 space-x-6 mx-8">
+            <button
+              type="button"
+              onClick={switchToProfile}
+              className={
+                activeTab === 'perfil' ?
+                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
+                  "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
+              }
+            >
+              Seu Perfil
+            </button>
+            <button
+              type="button"
+              onClick={switchToFriends}
+              className={
+                activeTab === 'amigos' ?
+                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
+                  "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
+              }
+            >
+              Amigos
+            </button>
+          </div>
+          {
+            activeTab === 'perfil'
+              ? <ProfileInfo user={user} openEditModal={openEditModal} />
+              : <FriendsList user={user} openAddFriendModal={openAddFriendModal} />
+          }
         </div>
-        {
-          activeTab === 'perfil'
-            ? <ProfileInfo user={user} openEditModal={openEditModal} />
-            : <FriendsList user={user} openAddFriendModal={openAddFriendModal} />
-        }
-      </div>
-
       </div>
 
       {isEditModalOpen && <EditModal closeModal={closeModal} />}

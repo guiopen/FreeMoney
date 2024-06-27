@@ -17,9 +17,11 @@ function AddFriendModal({ closeModal }) {
   return (
     <div id="addFriendModal" className="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="modal-content bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-center text-xl font-bold mb-6">Adicionar Amigo</h2>
+        <div className='flex justify-center'>
+            <h2 className="text-lg font-bold mb-6 text-project-blue border-b-2 border-project-blue inline pb-1">Adicionar amigo</h2>
+        </div>
         <form id="add-friend-form" onSubmit={formik.handleSubmit}>
-          <div className="mb-6 text-right">
+          <div className="mb-6 text-left">
             <label htmlFor="friendName">Nome do Amigo</label>
             <input
               type="text"
@@ -32,7 +34,7 @@ function AddFriendModal({ closeModal }) {
               onBlur={formik.handleBlur}
             />
           </div>
-          <div className="mb-6 text-right">
+          <div className="mb-6 text-left">
             <label htmlFor="friendEmail">Email do Amigo</label>
             <input
               type="email"
@@ -45,9 +47,9 @@ function AddFriendModal({ closeModal }) {
               onBlur={formik.handleBlur}
             />
           </div>
-          <div className="flex justify-between">
-            <button type="submit" className="bg-project-blue text-white font-bold py-2 px-4 rounded">Adicionar</button>
-            <button type="button" className="bg-red-500 text-white font-bold py-2 px-4 rounded" onClick={closeModal}>Cancelar</button>
+          <div className="flex justify-center gap-4">
+            <button type="button" className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:bg-red-600" onClick={closeModal}>Cancelar</button>
+            <button type="submit" className="bg-project-blue text-white px-4 py-2 rounded-md hover:bg-project-hover-blue focus:outline-none focus:bg-blue-600 mr-2">Adicionar</button>
           </div>
         </form>
       </div>
