@@ -8,9 +8,6 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
-// models
-const User = require("./models/User");
-
 // Configuração da URL de conexão do MongoDB
 const mongoURL = "mongodb+srv://free:money@freemoneycluster.fzca9rk.mongodb.net/?retryWrites=true&w=majority&appName=FreeMoneyCluster";
 const dbName = "freeMoneyDb";
