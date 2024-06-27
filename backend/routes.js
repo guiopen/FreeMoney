@@ -8,11 +8,10 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
-// models
-const User = require("./models/User");
-
-// Simulando um banco de dados em memória
-const users = [];
+// Configuração da URL de conexão do MongoDB
+const mongoURL = "mongodb+srv://free:money@freemoneycluster.fzca9rk.mongodb.net/?retryWrites=true&w=majority&appName=FreeMoneyCluster";
+const dbName = "freeMoneyDb";
+let database;
 
 MongoClient.connect(mongoURL, { useUnifiedTopology: true })
   .then(client => {
