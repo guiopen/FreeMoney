@@ -4,7 +4,7 @@ import { AuthProvider, useAuth } from './pages/Authentication/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar.js';
 import Simulations from './pages/Simulations/Simulations.js';
-import UserProfile from './pages/Profile';
+import UserProfile from './pages/Profile/UserProfile.js';
 import './App.css';
 
 
