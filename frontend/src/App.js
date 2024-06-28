@@ -10,7 +10,7 @@ import Summary from './pages/UserSummary/Summary.js';
 
 
 const AppContent = () => {
-  const { isLoggedIn } = useAuth();
+  const isLoggedIn = true
   if (isLoggedIn) {
     return (
       <>

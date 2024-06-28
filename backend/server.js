@@ -1,15 +1,24 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
-const port = 3001;
+const bodyParser = require('body-parser');
+const connectDB = require('./config/db');
+const userRoutes = require('./routes/userRoutes');
 
-app.use(bodyParser.json()); 
-app.use(express.static('../frontend/build'));
+app.use(express.json());
+app.use('/api', userRoutes);
 
-// Importa as rotas do arquivo routes.js
-const router = require('./routes'); 
-app.use('/', router); // Monta as rotas na raiz '/'
-
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+// Conectar ao banco de dados
+connectDB();
+
+// Middleware
+app.use(bodyParser.json());
+
+// Rotas
+app.use('/api/users', userRoutes);
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,9 +1,9 @@
 require("dotenv").config();
 const express = require('express');
 const { MongoClient } = require('mongodb');
-const { generateRandomNumber } = require('./utils/generateRandomCode');
-const { encryptPassword, verifyPassword } = require('./utils/passwordEncryption');
-const { checkToken } = require('./utils/checkToken');
+const { generateRandomNumber } = require('../utils/generateRandomCode');
+const { encryptPassword, verifyPassword } = require('../utils/passwordEncryption');
+const { checkToken } = require('../utils/checkToken');
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
