@@ -44,6 +44,5 @@ export const testFriendHistory = async () => {
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
-      // Lide com o erro de rede
     }
   };

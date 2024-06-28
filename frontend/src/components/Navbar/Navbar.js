@@ -4,7 +4,7 @@ import logo from '../../assets/images/FreeMoney-logo.png';
 import { useAuth } from '../../pages/Authentication/AuthContext';
 
 const navigation = [
-  { name: 'Resumo', href: '/resumo', current: true, icon: HomeIcon, color: 'text-black' },
+  { name: 'Resumo', href: '/', current: true, icon: HomeIcon, color: 'text-black' },
   { name: 'Simulações', href: '/simulacoes', current: false, icon: ChartBarIcon, color: 'text-black' },
   { name: 'Perfil', href: '/perfil', current: false, icon: UserIcon, color: 'text-black' },
   { name: 'Logout', href: '#', current: false, icon: ArrowRightOnRectangleIcon, color: 'text-black', action: 'logout' }
