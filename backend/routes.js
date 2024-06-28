@@ -114,7 +114,7 @@ router.post("/login_user", async (req, res) => {
       return res.status(422).json({ message: "Email e senha são obrigatórios!" });
   }
 
-  // Verificar se o email já está cadastrado
+  // Verifica se o email já está cadastrado
   const user = await usersCollection.findOne({ email: email });
   if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado!" });
@@ -127,13 +127,15 @@ router.post("/login_user", async (req, res) => {
   }
 
   try {
-      const token = jwt.sign({ id: user._id }, process.env.SECRET);
+      // Define o tempo máximo de sessão para 3 horas
+      const token = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: '3h' });
       res.status(200).json({ token, message: "Autenticação realizada com sucesso!" });
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: error });
   }
 });
+
 
 
 // Rota privada de teste
