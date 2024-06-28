@@ -7,6 +7,7 @@ const { checkToken } = require('./utils/checkToken');
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+const ObjectId = require('mongodb').ObjectId;
 
 // Configuração da URL de conexão do MongoDB
 const mongoURL = "mongodb+srv://free:money@freemoneycluster.fzca9rk.mongodb.net/?retryWrites=true&w=majority&appName=FreeMoneyCluster";
@@ -61,9 +62,9 @@ router.post('/register_user', async (req, res) => {
       return res.status(400).json({ message: 'Email já cadastrado' });
     }
 
+    // Cadastrar usuario
     const userCode = generateRandomNumber()
     const hashedPassword = await encryptPassword(password);
-
     const newUser = {
       name: name,
       email: email,
@@ -80,6 +81,30 @@ router.post('/register_user', async (req, res) => {
   }
 });
 
+router.get('/user', checkToken, async (req, res) => {
+  try {
+    // O ID do usuário está disponível em req.user após a verificação do token
+    const userId = req.user.id; 
+
+    const usersCollection = database.collection('users');
+
+    // Busca o usuário pelo ID, excluindo o campo 'password' da resposta
+    const user = await usersCollection.findOne(
+      { _id: new ObjectId(userId) },
+      { projection: { password: 0 } }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao buscar dados do usuário' });
+  }
+});
+
 // Rota para realizar o login e gerar o token JWT
 router.post("/login_user", async (req, res) => {
   const usersCollection = database.collection('users');
@@ -89,14 +114,14 @@ router.post("/login_user", async (req, res) => {
       return res.status(422).json({ message: "Email e senha são obrigatórios!" });
   }
 
+  // Verificar se o email já está cadastrado
   const user = await usersCollection.findOne({ email: email });
-
   if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado!" });
   }
 
+  // Verifica se a senha bate
   const checkPassword = await bcrypt.compare(password, user.password);
-
   if (!checkPassword) {
       return res.status(422).json({ message: "Senha inválida" });
   }
@@ -112,13 +137,12 @@ router.post("/login_user", async (req, res) => {
 
 
 // Rota privada de teste
-router.get("/user/:id", checkToken, async (req, res) => {
+router.get("/test/user/:id", checkToken, async (req, res) => {
   const usersCollection = database.collection('users');
   const id = req.params.id;
 
   try {
     // Verifica se o ID é válido
-    const ObjectId = require('mongodb').ObjectId;
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ msg: "ID inválido!" });
     }
@@ -136,8 +160,6 @@ router.get("/user/:id", checkToken, async (req, res) => {
     res.status(500).json({ msg: "Erro ao buscar usuário" });
   }
 });
-
-
 
 // Rota para pegar o histórico de outro usuario
 router.get('/friend_history', async (req, res) => {

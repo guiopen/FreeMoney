@@ -9,7 +9,6 @@ import {
 } from 'chart.js';
 
 export default function PizzaChart({ transactions }) {
-
   const [selected, setSelected] = useState("expenses")
 
   function handleSelect(ev) {

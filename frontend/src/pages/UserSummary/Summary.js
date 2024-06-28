@@ -1,26 +1,26 @@
+import { useEffect, useState } from "react";
 import LineChart from "../../components/UserSummary/LineChart";
 import PizzaChart from "../../components/UserSummary/PizzaChart";
 import TransactionHistories from "../../components/UserSummary/TransactionHistories";
-import fakeTransactions from "../../data/fakeTransactions";
+import { fetchUserData } from "../../endpoint";
+import { useAuth } from "../Authentication/AuthContext";
 
 export default function Summary() {
-  // const [transactions, setTransactions] = useState(fakeTransactions)
+  const { token } = useAuth()
+  const [userHistory, setUserHistory] = useState([])
 
-  // useEffect(() => {
-  // async function fetchTransactions() {
-  //   fetch("/transactions")
-  //     .then(res => {
-  //       if (!res.ok) {
-  //         throw new Error("Erro na requisição!")
-  //       }
-  //       return res.json()
-  //     })
-  //     .then(json => setTransactions(json))
-  //     .catch(e => console.error(e, "Fetch error"))
-  // }
+  const handleFetchUserData = async () => {
+    try {
+      const data = await fetchUserData(token);
+      console.log('Dados do usuário:', data);
+      setUserHistory(data.history)
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+    }
+  };
 
-  // fetchTransactions()
-  // }, [transactions])
+  useEffect(() => {handleFetchUserData()}, []);
+
   return (
     <div className="bg-[#D8FDFF] w-full min-h-[calc(100vh-96px)]">
       <div className="w-full py-12 px-4 lg:px-8
@@ -30,18 +30,18 @@ export default function Summary() {
         <div className="flex flex-col gap-8 lg:flex-1 w-full h-full">
           <div className="w-full p-4 rounded-md bg-white lg:flex-1">
             <LineChart
-              transactions={fakeTransactions}
+              transactions={userHistory}
             />
           </div>
           <div className="w-full p-4 rounded-md bg-white">
             <PizzaChart
-              transactions={fakeTransactions}
+              transactions={userHistory}
             />
           </div>
         </div>
         <div className="p-4 rounded-md bg-white lg:flex-1 w-full">
           <TransactionHistories
-            transactions={fakeTransactions}
+            transactions={userHistory}
           />
         </div>
       </div>
