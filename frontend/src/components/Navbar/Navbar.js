@@ -1,11 +1,13 @@
 import { Disclosure } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon, HomeIcon, ChartBarIcon, UserIcon } from '@heroicons/react/24/solid';
+import { Bars3Icon, XMarkIcon, HomeIcon, ChartBarIcon, UserIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid';
 import logo from '../../assets/images/FreeMoney-logo.png';
+import { useAuth } from '../../pages/Authentication/AuthContext';
 
 const navigation = [
-  { name: 'Resumo', href: '/', current: true, icon: HomeIcon, color: 'text-black' },
+  { name: 'Resumo', href: '/resumo', current: true, icon: HomeIcon, color: 'text-black' },
   { name: 'Simulações', href: '/simulacoes', current: false, icon: ChartBarIcon, color: 'text-black' },
   { name: 'Perfil', href: '/perfil', current: false, icon: UserIcon, color: 'text-black' },
+  { name: 'Logout', href: '#', current: false, icon: ArrowRightOnRectangleIcon, color: 'text-black', action: 'logout' }
 ];
 
 function classNames(...classes) {
@@ -13,6 +15,8 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const { logout } = useAuth(); 
+
   return (
     <Disclosure as="nav" className="bg-white shadow-md">
       {({ open }) => (
@@ -38,6 +42,7 @@ export default function Navbar() {
                       <a
                         key={item.name}
                         href={item.href}
+                        onClick={item.action === 'logout' ? logout : undefined}
                         className={classNames(
                           'text-black hover:text-project-blue flex flex-col items-center rounded-md px-3 py-2 text-sm font-medium'
                         )}
@@ -60,6 +65,7 @@ export default function Navbar() {
                   key={item.name}
                   as="a"
                   href={item.href}
+                  onClick={item.action === 'logout' ? logout : undefined}
                   className={classNames(
                     'block rounded-md px-3 py-2 text-base font-medium text-black hover:text-project-blue focus:text-project-blue'
                   )}

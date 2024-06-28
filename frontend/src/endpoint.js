@@ -1,3 +1,14 @@
+export const sendLoginCommand = (values) => {
+  return fetch('/login_user', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+  });
+};
+
+
 export const sendRegisterCommand = (values) => {
     return fetch('/register_user', {
       method: 'POST',
