@@ -1,4 +1,3 @@
-// components/UserProfile/UserProfile.js
 import React, { useState } from 'react';
 import ProfileInfo from './ProfileInfo';
 import FriendsList from './FriendsList';
@@ -14,7 +13,7 @@ function UserProfile() {
     nome: 'João Silva',
     dataNascimento: '1990-01-01',
     email: 'joao.silva@example.com',
-    senha: '********',
+    senha: 'senha1234',
     amigos: [
       { nome: 'Amigo 1', email: 'amigo1@example.com' },
       { nome: 'Amigo 2', email: 'amigo2@example.com' },
@@ -48,7 +47,7 @@ function UserProfile() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center h-screen bg-[#D8FDFF]">
       <div className="bg-white w-4/5 md:w-2/5 shadow-md rounded-lg flex justify-between mx-auto mt-20 max-w-3xl flex flex-col relative">
         <div className='p-4 md:p-8 w-full'>
           <div className="flex justify-center mb-6 space-x-6 mx-8">
