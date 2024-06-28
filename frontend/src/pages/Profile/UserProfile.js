@@ -1,3 +1,4 @@
+// components/UserProfile/UserProfile.js
 import React, { useState } from 'react';
 import ProfileInfo from './ProfileInfo';
 import FriendsList from './FriendsList';
@@ -11,7 +12,7 @@ function UserProfile() {
 
   const [userData, setUserData] = useState({
     nome: 'João Silva',
-    dataNascimento: '01/01/1990',
+    dataNascimento: '1990-01-01',
     email: 'joao.silva@example.com',
     senha: '********',
     amigos: [
