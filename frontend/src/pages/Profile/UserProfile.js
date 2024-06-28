@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../../App.css';
 import ProfileInfo from './ProfileInfo';
 import FriendsList from './FriendsList';
 import EditModal from './EditModal';
@@ -10,7 +9,7 @@ function UserProfile() {
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('perfil');
 
-  const user = {
+  const [userData, setUserData] = useState({
     nome: 'João Silva',
     dataNascimento: '01/01/1990',
     email: 'joao.silva@example.com',
@@ -20,7 +19,7 @@ function UserProfile() {
       { nome: 'Amigo 2', email: 'amigo2@example.com' },
       { nome: 'Amigo 3', email: 'amigo3@example.com' },
     ]
-  };
+  });
 
   const openEditModal = () => {
     setIsEditModalOpen(true);
@@ -43,8 +42,12 @@ function UserProfile() {
     setActiveTab('amigos');
   };
 
+  const updateUser = (updatedData) => {
+    setUserData(updatedData);
+  };
+
   return (
-    <div className="flex justify-center items-center h-screen bg-[#D8FDFF]">
+    <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white w-4/5 md:w-2/5 shadow-md rounded-lg flex justify-between mx-auto mt-20 max-w-3xl flex flex-col relative">
         <div className='p-4 md:p-8 w-full'>
           <div className="flex justify-center mb-6 space-x-6 mx-8">
@@ -53,8 +56,8 @@ function UserProfile() {
               onClick={switchToProfile}
               className={
                 activeTab === 'perfil' ?
-                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
-                  "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
+                  "text-sm md:text-lg font-bold text-blue-600 border-b-2 border-blue-600 hover:border-black hover:text-black transition-colors" :
+                  "text-sm md:text-lg font-bold hover:text-blue-600 transition-colors"
               }
             >
               Seu Perfil
@@ -64,8 +67,8 @@ function UserProfile() {
               onClick={switchToFriends}
               className={
                 activeTab === 'amigos' ?
-                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
-                  "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
+                  "text-sm md:text-lg font-bold text-blue-600 border-b-2 border-blue-600 hover:border-black hover:text-black transition-colors" :
+                  "text-sm md:text-lg font-bold hover:text-blue-600 transition-colors"
               }
             >
               Amigos
@@ -73,13 +76,13 @@ function UserProfile() {
           </div>
           {
             activeTab === 'perfil'
-              ? <ProfileInfo user={user} openEditModal={openEditModal} />
-              : <FriendsList user={user} openAddFriendModal={openAddFriendModal} />
+              ? <ProfileInfo user={userData} openEditModal={openEditModal} />
+              : <FriendsList user={userData} openAddFriendModal={openAddFriendModal} />
           }
         </div>
       </div>
 
-      {isEditModalOpen && <EditModal closeModal={closeModal} />}
+      {isEditModalOpen && <EditModal user={userData} closeModal={closeModal} updateUser={updateUser} />}
       {isAddFriendModalOpen && <AddFriendModal closeModal={closeModal} />}
     </div>
   );

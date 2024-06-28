@@ -1,24 +1,28 @@
 const express = require('express');
-const app = express();
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 
-app.use(express.json());
-app.use('/api', userRoutes);
-
+const app = express();
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
 
 // Conectar ao banco de dados
 connectDB();
 
-// Middleware
-app.use(bodyParser.json());
+// Middleware para permitir CORS
+app.use(cors({
+  origin: 'http://localhost:3001',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Middleware para limitar o tamanho do corpo da requisição
+app.use(bodyParser.json({ limit: '10mb' }));
 
 // Rotas
-app.use('/api/users', userRoutes);
+app.use('/api/user', userRoutes);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Servidor backend rodando na porta ${PORT}`);
+});
