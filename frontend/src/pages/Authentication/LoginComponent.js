@@ -3,16 +3,12 @@ import { useAuth } from './AuthContext';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { sendLoginCommand } from '../../endpoint';
 
 const LoginComponent = () => {
     const { login } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
-    const users = [
-        { email: 'user1@example.com', password: 'password1' },
-        { email: 'user2@example.com', password: 'password2' }
-    ];
 
     return (
         <Formik
@@ -22,16 +18,31 @@ const LoginComponent = () => {
                 password: Yup.string().required('Obrigatório')
             })}
             onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                    const user = users.find(user => user.email === values.email && user.password === values.password);
-                    if (user) {
-                        login();
-                        setErrorMessage('');
-                    } else {
-                        setErrorMessage('E-mail ou senha incorretos');
-                    }
-                    setSubmitting(false);
-                }, 400);
+                sendLoginCommand(values)
+                    .then(response => {
+                        const isJson = response.headers.get('Content-Type')?.includes('application/json');
+                        if (response.ok && isJson) {
+                            return response.json();
+                        } else {
+                            setErrorMessage('Erro ao realizar login');
+                            setSubmitting(false);
+                            return null;
+                        }
+                    })
+                    .then(data => {
+                        if (data && data.token) {
+                            login(data.token);
+                            setErrorMessage('');
+                        } else if (data) {
+                            setErrorMessage(data.message || 'Erro ao realizar login');
+                        }
+                    })
+                    .catch(error => {
+                        setErrorMessage('Erro ao realizar login');
+                    })
+                    .finally(() => {
+                        setSubmitting(false);
+                    });
             }}
         >
             {formik => (
@@ -42,7 +53,7 @@ const LoginComponent = () => {
                             id="email"
                             name="email"
                             className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-blue-200"
-                            placeholder= 'Email'
+                            placeholder='Email'
                         />
                         <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
                     </div>

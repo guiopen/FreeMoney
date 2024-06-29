@@ -9,7 +9,7 @@ export default function TransactionHistories({ transactions }) {
         ${t.expense ? "text-red-600" : "text-green-600"}`}
       >
         <td>{t.title}</td>
-        <td>{t.date.toLocaleDateString().substring(0, 5)}</td>
+        <td>{new Date(t.date).toLocaleDateString().substring(0, 5)}</td>
         <td className="hidden sm:block">{t.category}</td>
         <td>{t.value}</td>
       </tr>

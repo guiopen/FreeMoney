@@ -21,7 +21,7 @@ export default function LineChart({ transactions }) {
 
   const expensesByMonth = transactions
     .reduce((obj, transaction) => {
-      const month = transaction.date.getMonth()
+      const month = new Date(transaction.date).getMonth()
       if (transaction.expense) {
         obj[month] += transaction.value
       }
@@ -30,7 +30,7 @@ export default function LineChart({ transactions }) {
 
   const incomesByMonth = transactions
     .reduce((obj, transaction) => {
-      const month = transaction.date.getMonth()
+      const month = new Date(transaction.date).getMonth()
       if (!transaction.expense) {
         obj[month] += transaction.value
       }
