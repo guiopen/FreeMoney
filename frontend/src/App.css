@@ -1,4 +1,3 @@
-/* App.css */
 body {
   font-family: Arial, sans-serif;
 }
@@ -39,11 +38,9 @@ body {
   color: #3298AB;
 }
 
-
 .border-project-blue {
   border-color: #3298AB;
 }
-
 
 .transition-colors {
   transition: color 0.3s, border-color 0.3s;
@@ -55,5 +52,32 @@ body {
   right: 20px;
   color: #3298AB;
   cursor: pointer;
+}
 
+.profile-info {
+  margin-bottom: 20px; /* Espaço entre o componente ProfileInfo e o próximo elemento */
+}
+
+.profile-info p {
+  margin-bottom: 10px; /* Espaço entre cada parágrafo de informação */
+}
+
+.profile-info-divider {
+  margin: 15px 0; /* Espaço acima e abaixo das linhas horizontais */
+  border: 0;
+  border-top: 1px solid #ccc; /* Cor e estilo da linha horizontal */
+}
+
+.friends-list {
+  margin-top: 20px; /* Espaço acima da lista de amigos */
+}
+
+.friend-item {
+  margin-bottom: 15px; /* Espaço entre cada item de amigo */
+}
+
+.friend-info-divider {
+  margin: 10px 0; /* Espaço acima e abaixo das linhas horizontais */
+  border: 0;
+  border-top: 1px solid #ccc; /* Cor e estilo da linha horizontal */
 }

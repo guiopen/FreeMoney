@@ -1,38 +1,32 @@
 import React, { useState } from 'react';
-import '../../App.css';
 import ProfileInfo from './ProfileInfo';
-import FriendsList from './FriendsList';
+import AddFriend from './AddFriend';
 import EditModal from './EditModal';
-import AddFriendModal from './AddFriendModal';
+import FriendSummaryModal from './FriendSummaryModal';
 
 function UserProfile() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false);
+  const [isFriendSummaryModalOpen, setIsFriendSummaryModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('perfil');
 
-  const user = {
+  const [userData, setUserData] = useState({
     nome: 'João Silva',
-    dataNascimento: '01/01/1990',
+    dataNascimento: '1990-01-01',
     email: 'joao.silva@example.com',
-    senha: '********',
-    amigos: [
-      { nome: 'Amigo 1', email: 'amigo1@example.com' },
-      { nome: 'Amigo 2', email: 'amigo2@example.com' },
-      { nome: 'Amigo 3', email: 'amigo3@example.com' },
-    ]
-  };
+    senha: 'senha1234'
+  });
 
   const openEditModal = () => {
     setIsEditModalOpen(true);
   };
 
-  const openAddFriendModal = () => {
-    setIsAddFriendModalOpen(true);
+  const openFriendSummaryModal = () => {
+    setIsFriendSummaryModalOpen(true);
   };
 
   const closeModal = () => {
     setIsEditModalOpen(false);
-    setIsAddFriendModalOpen(false);
+    setIsFriendSummaryModalOpen(false);
   };
 
   const switchToProfile = () => {
@@ -41,6 +35,10 @@ function UserProfile() {
 
   const switchToFriends = () => {
     setActiveTab('amigos');
+  };
+
+  const updateUser = (updatedData) => {
+    setUserData(updatedData);
   };
 
   return (
@@ -53,7 +51,7 @@ function UserProfile() {
               onClick={switchToProfile}
               className={
                 activeTab === 'perfil' ?
-                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
+                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-project-blue hover:border-black hover:text-black transition-colors" :
                   "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
               }
             >
@@ -64,7 +62,7 @@ function UserProfile() {
               onClick={switchToFriends}
               className={
                 activeTab === 'amigos' ?
-                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-[#3298AB] hover:border-black hover:text-black transition-colors" :
+                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-project-blue hover:border-black hover:text-black transition-colors" :
                   "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
               }
             >
@@ -73,14 +71,14 @@ function UserProfile() {
           </div>
           {
             activeTab === 'perfil'
-              ? <ProfileInfo user={user} openEditModal={openEditModal} />
-              : <FriendsList user={user} openAddFriendModal={openAddFriendModal} />
+              ? <ProfileInfo user={userData} openEditModal={openEditModal} />
+              : <AddFriend user={userData} openFriendSummaryModal={openFriendSummaryModal} />
           }
         </div>
       </div>
 
-      {isEditModalOpen && <EditModal closeModal={closeModal} />}
-      {isAddFriendModalOpen && <AddFriendModal closeModal={closeModal} />}
+      {isEditModalOpen && <EditModal user={userData} closeModal={closeModal} updateUser={updateUser} />}
+      {isFriendSummaryModalOpen && <FriendSummaryModal closeModal={closeModal} />}
     </div>
   );
 }
