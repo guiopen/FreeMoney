@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import ProfileInfo from './ProfileInfo';
-import FriendsList from './FriendsList';
+import AddFriend from './AddFriend';
 import EditModal from './EditModal';
-import AddFriendModal from './AddFriendModal';
+import FriendSummaryModal from './FriendSummaryModal';
 
 function UserProfile() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false);
+  const [isFriendSummaryModalOpen, setIsFriendSummaryModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('perfil');
 
   const [userData, setUserData] = useState({
@@ -20,13 +20,13 @@ function UserProfile() {
     setIsEditModalOpen(true);
   };
 
-  const openAddFriendModal = () => {
-    setIsAddFriendModalOpen(true);
+  const openFriendSummaryModal = () => {
+    setIsFriendSummaryModalOpen(true);
   };
 
   const closeModal = () => {
     setIsEditModalOpen(false);
-    setIsAddFriendModalOpen(false);
+    setIsFriendSummaryModalOpen(false);
   };
 
   const switchToProfile = () => {
@@ -72,13 +72,13 @@ function UserProfile() {
           {
             activeTab === 'perfil'
               ? <ProfileInfo user={userData} openEditModal={openEditModal} />
-              : <FriendsList user={userData} openAddFriendModal={openAddFriendModal} />
+              : <AddFriend user={userData} openFriendSummaryModal={openFriendSummaryModal} />
           }
         </div>
       </div>
 
       {isEditModalOpen && <EditModal user={userData} closeModal={closeModal} updateUser={updateUser} />}
-      {isAddFriendModalOpen && <AddFriendModal closeModal={closeModal} />}
+      {isFriendSummaryModalOpen && <FriendSummaryModal closeModal={closeModal} />}
     </div>
   );
 }

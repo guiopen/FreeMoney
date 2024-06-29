@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-function FriendsList({openAddFriendModal}) {
+function AddFriend({openAddFriendModal}) {
   const formik = useFormik({
     initialValues: {
       friendName: '',
@@ -53,4 +53,4 @@ function FriendsList({openAddFriendModal}) {
   );
 }
 
-export default FriendsList;
+export default AddFriend;
