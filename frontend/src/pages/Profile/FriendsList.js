@@ -1,21 +1,54 @@
 import React from 'react';
-import { FaPlus } from "react-icons/fa";
+import { useFormik } from 'formik';
 
-function FriendsList({ user, openAddFriendModal }) {
+function FriendsList({openAddFriendModal}) {
+  const formik = useFormik({
+    initialValues: {
+      friendName: '',
+      friendEmail: ''
+    },
+    onSubmit: (values) => {
+      console.log(values);
+      formik.resetForm();
+    },
+  });
+
   return (
     <>
-      <button className="btn" onClick={openAddFriendModal}>
-        <FaPlus size={20} />
-      </button>
-      <div className="friends-list">
-        {user.amigos.map((amigo, index) => (
-          <div key={index} className="friend-item">
-            <p><strong>Nome do Amigo:</strong> {amigo.nome}</p>
-            <p><strong>Email do Amigo:</strong> {amigo.email}</p>
-            <hr className="friend-info-divider" />
+      <div className="add-friend-form">
+        <form id="add-friend-form" onSubmit={formik.handleSubmit}>
+          <div className="mb-6 text-left">
+            <label htmlFor="friendName">Email do amigo:</label>
+            <input
+              type="text"
+              name="friendName"
+              id="friendName"
+              autoComplete="off"
+              className="block w-full border border-gray-300 rounded py-2 px-3"
+              value={formik.values.friendName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
           </div>
-        ))}
+          <div className="mb-6 text-left">
+            <label htmlFor="friendEmail">Código</label>
+            <input
+              type="email"
+              name="friendEmail"
+              id="friendEmail"
+              autoComplete="off"
+              className="block w-full border border-gray-300 rounded py-2 px-3"
+              value={formik.values.friendEmail}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          </div>
+          <div className="flex justify-center gap-4">
+            <button type="submit" className="bg-project-blue text-white px-4 py-2 rounded-md hover:bg-project-hover-blue focus:outline-none focus:bg-blue-600 mr-2" onClick={openAddFriendModal}>Adicionar</button>
+          </div>
+        </form>
       </div>
+  
     </>
   );
 }

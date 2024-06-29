@@ -13,12 +13,7 @@ function UserProfile() {
     nome: 'João Silva',
     dataNascimento: '1990-01-01',
     email: 'joao.silva@example.com',
-    senha: 'senha1234',
-    amigos: [
-      { nome: 'Amigo 1', email: 'amigo1@example.com' },
-      { nome: 'Amigo 2', email: 'amigo2@example.com' },
-      { nome: 'Amigo 3', email: 'amigo3@example.com' },
-    ]
+    senha: 'senha1234'
   });
 
   const openEditModal = () => {
@@ -56,8 +51,8 @@ function UserProfile() {
               onClick={switchToProfile}
               className={
                 activeTab === 'perfil' ?
-                  "text-sm md:text-lg font-bold text-blue-600 border-b-2 border-blue-600 hover:border-black hover:text-black transition-colors" :
-                  "text-sm md:text-lg font-bold hover:text-blue-600 transition-colors"
+                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-project-blue hover:border-black hover:text-black transition-colors" :
+                  "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
               }
             >
               Seu Perfil
@@ -67,8 +62,8 @@ function UserProfile() {
               onClick={switchToFriends}
               className={
                 activeTab === 'amigos' ?
-                  "text-sm md:text-lg font-bold text-blue-600 border-b-2 border-blue-600 hover:border-black hover:text-black transition-colors" :
-                  "text-sm md:text-lg font-bold hover:text-blue-600 transition-colors"
+                  "text-sm md:text-lg font-bold text-project-blue border-b-2 border-project-blue hover:border-black hover:text-black transition-colors" :
+                  "text-sm md:text-lg font-bold hover:text-project-blue transition-colors"
               }
             >
               Amigos
