@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-function AddFriend({openAddFriendModal}) {
+function AddFriend({openFriendSummaryModal}) {
   const formik = useFormik({
     initialValues: {
       friendName: '',
@@ -44,7 +44,7 @@ function AddFriend({openAddFriendModal}) {
             />
           </div>
           <div className="flex justify-center gap-4">
-            <button type="submit" className="bg-project-blue text-white px-4 py-2 rounded-md hover:bg-project-hover-blue focus:outline-none focus:bg-blue-600 mr-2" onClick={openAddFriendModal}>Adicionar</button>
+            <button type="submit" className="bg-project-blue text-white px-4 py-2 rounded-md hover:bg-project-hover-blue focus:outline-none focus:bg-blue-600 mr-2" onClick={openFriendSummaryModal}>Visualizar Histórico do Amigo</button>
           </div>
         </form>
       </div>
