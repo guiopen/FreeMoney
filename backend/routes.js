@@ -27,24 +27,6 @@ router.get('/nomes', (req, res) => {
   res.json(nomes);
 });
 
-const fakeTransactions = [
-  {
-    id: 0,
-    title: "Conta de Luz",
-    date: new Date(),
-    category: "Casa",
-    value: 789.2,
-    expense: true,
-  },
-  {
-    id: 4,
-    title: "Estágio",
-    date: new Date(),
-    category: "Salário",
-    value: 1789.2,
-    expense: false,
-  }
-]
 // Rota para registrar um novo usuário
 router.post('/register_user', async (req, res) => {
   const { name, email, password } = req.body;
@@ -70,7 +52,7 @@ router.post('/register_user', async (req, res) => {
       email: email,
       password: hashedPassword,
       code: userCode,
-      history: fakeTransactions
+      history: []
     };
     await usersCollection.insertOne(newUser);
 
@@ -78,6 +60,57 @@ router.post('/register_user', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Erro ao registrar usuário' });
+  }
+});
+
+router.post('/add_transaction', checkToken, async (req, res) => {
+  const { title, date, category, value, expense } = req.body;
+  const userId = req.user.id;
+
+  // Basic validation (you can add more checks as needed)
+  if (!title || !date || !category || !value || expense === undefined) {
+    return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+  }
+
+  try {
+    const usersCollection = database.collection('users');
+
+    // Find the user to get their current history and determine the new ID
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    // Calculate the new transaction ID (last ID + 1)
+    const newId = user.history.length > 0 
+      ? user.history[user.history.length - 1].id + 1 
+      : 0;
+
+    // Create the new transaction object
+    const newTransaction = {
+      id: newId,
+      title,
+      date,
+      category,
+      value,
+      expense,
+    };
+
+    // Update the user's history in the database
+    const result = await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $push: { history: newTransaction } } 
+    );
+
+    if (result.modifiedCount === 1) {
+      res.status(201).json({ message: 'Transação adicionada com sucesso', transaction: newTransaction });
+    } else {
+      res.status(500).json({ message: 'Erro ao adicionar transação' });
+    }
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao adicionar transação' });
   }
 });
 

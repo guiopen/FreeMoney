@@ -42,6 +42,7 @@ export default function Summary() {
         <div className="p-4 rounded-md bg-white lg:flex-1 w-full">
           <TransactionHistories
             transactions={userHistory}
+            setTransactions={setUserHistory}
           />
         </div>
       </div>

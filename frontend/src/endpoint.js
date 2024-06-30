@@ -76,3 +76,14 @@ export const testFriendHistory = async () => {
       console.error('Erro na requisição:', error);
     }
   };
+
+export const addTransaction = async (transactionData, token) => {
+  return fetch('/add_transaction', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // Assuming you are using Bearer token for authentication
+    },
+    body: JSON.stringify(transactionData)
+  });
+};

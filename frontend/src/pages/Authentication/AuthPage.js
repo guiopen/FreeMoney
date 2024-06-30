@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Logo from '../../components/Logo';
 import LoginComponent from './LoginComponent';
 import RegisterComponent from './RegisterComponent';
-import useWindowSize from '../../hooks/useWindowSize';
 
 const AUTH_COMPONENT = {
     LOGIN: 'login',
@@ -10,7 +9,6 @@ const AUTH_COMPONENT = {
 }
 
 const AuthPage = () => {
-    const { windowWidth, windowHeight } = useWindowSize();
     const [currentAuthComponent, setCurrentAuthComponent] = useState(AUTH_COMPONENT.LOGIN);
 
     return (
