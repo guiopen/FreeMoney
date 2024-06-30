@@ -10,7 +10,7 @@ const bcrypt = require('bcrypt');
 const ObjectId = require('mongodb').ObjectId;
 
 // Configuração da URL de conexão do MongoDB
-const mongoURL = "mongodb+srv://free:money@freemoneycluster.fzca9rk.mongodb.net/?retryWrites=true&w=majority&appName=FreeMoneyCluster";
+const mongoURL = process.env.MONGO_URL
 const dbName = "freeMoneyDb";
 let database;
 
