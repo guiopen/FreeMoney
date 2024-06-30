@@ -5,21 +5,7 @@ import TransactionHistories from "../../components/UserSummary/TransactionHistor
 import { fetchUserData } from "../../endpoint";
 import { useAuth } from "../Authentication/AuthContext";
 
-export default function Summary() {
-  const { token } = useAuth()
-  const [userHistory, setUserHistory] = useState([])
-
-  const handleFetchUserData = async () => {
-    try {
-      const data = await fetchUserData(token);
-      console.log('Dados do usuário:', data);
-      setUserHistory(data.history)
-    } catch (error) {
-      console.error('Erro ao buscar dados:', error);
-    }
-  };
-
-  useEffect(() => {handleFetchUserData()}, []);
+export default function Summary({ userHistory }) {
 
   return (
     <div className="bg-[#D8FDFF] w-full min-h-[calc(100vh-96px)]">

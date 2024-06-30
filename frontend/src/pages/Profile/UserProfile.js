@@ -41,6 +41,8 @@ function UserProfile() {
     setUserData(updatedData);
   };
 
+  const [friendHistory, setFriendHistory] = useState([]);
+
   return (
     <div className="flex justify-center items-center h-screen bg-[#D8FDFF]">
       <div className="bg-white w-4/5 md:w-2/5 shadow-md rounded-lg flex justify-between mx-auto mt-20 max-w-3xl flex flex-col relative">
@@ -72,13 +74,13 @@ function UserProfile() {
           {
             activeTab === 'perfil'
               ? <ProfileInfo user={userData} openEditModal={openEditModal} />
-              : <AddFriend user={userData} openFriendSummaryModal={openFriendSummaryModal} />
+              : <AddFriend user={userData} openFriendSummaryModal={openFriendSummaryModal} setFriendHistory={setFriendHistory} />
           }
         </div>
       </div>
 
       {isEditModalOpen && <EditModal user={userData} closeModal={closeModal} updateUser={updateUser} />}
-      {isFriendSummaryModalOpen && <FriendSummaryModal closeModal={closeModal} />}
+      {isFriendSummaryModalOpen && <FriendSummaryModal closeModal={closeModal} history={friendHistory} />}
     </div>
   );
 }
