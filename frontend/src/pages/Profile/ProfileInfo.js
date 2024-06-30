@@ -1,16 +1,15 @@
 import React from 'react';
 import { FaEdit } from "react-icons/fa";
 
-function ProfileInfo({ user, openEditModal }) {
+function ProfileInfo({ userData, openEditModal }) {
   return (
     <div className="profile-info">
-      <p><strong>Nome:</strong> {user.nome}</p>
       <hr className="profile-info-divider" />
-      <p><strong>Data de Nascimento:</strong> {user.dataNascimento}</p>
+      <p><strong>Nome:</strong> {userData.name}</p>
       <hr className="profile-info-divider" />
-      <p><strong>Email:</strong> {user.email}</p>
+      <p><strong>Email:</strong> {userData.email}</p>
       <hr className="profile-info-divider" />
-      <p><strong>Senha:</strong> {user.senha}</p>
+      <p><strong>Código:</strong> {userData.code}</p>
       <hr className="profile-info-divider" />
       <button className="btn" onClick={openEditModal}>
         <FaEdit size={20}/>

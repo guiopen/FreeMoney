@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 
-const EditModal = ({ user, closeModal, updateUser }) => {
+const EditModal = ({ userData, closeModal, updateUser }) => {
   const formik = useFormik({
     initialValues: {
-      nome: user.nome,
-      dataNascimento: user.dataNascimento,
-      email: user.email,
-      senha: '',
+      name: userData.name,
+      email: userData.email,
+      code: userData.code
     },
     onSubmit: async (values) => {
-      const dataFormatada = new Date(values.dataNascimento).toISOString().split('T')[0];
-      const dadosAtualizados = { ...values, dataNascimento: dataFormatada };
+      const dadosAtualizados = { ...values };
 
       try {
         const response = await fetch('http://localhost:3000/api/user', {
@@ -36,12 +34,11 @@ const EditModal = ({ user, closeModal, updateUser }) => {
 
   useEffect(() => {
     formik.setValues({
-      nome: user.nome,
-      dataNascimento: user.dataNascimento,
-      email: user.email,
-      senha: '', // Como não deve ser exibida, deixamos vazia
+      name: userData.name,
+      email: userData.email,
+      code: userData.code
     });
-  }, [user]);
+  }, [userData]);
 
   return (
     <div className="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -54,8 +51,8 @@ const EditModal = ({ user, closeModal, updateUser }) => {
             <label htmlFor="nome" className="block text-sm font-medium text-gray-700">Nome</label>
             <input
               type="text"
-              id="nome"
-              name="nome"
+              id="name"
+              name="name"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.nome}
@@ -67,52 +64,26 @@ const EditModal = ({ user, closeModal, updateUser }) => {
             ) : null}
           </div>
           <div className="mb-4">
-            <label htmlFor="dataNascimento" className="block text-sm font-medium text-gray-700">Data de Nascimento</label>
-            <input
-              type="date"
-              id="dataNascimento"
-              name="dataNascimento"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.dataNascimento}
-              autoComplete="off"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-            {formik.touched.dataNascimento && formik.errors.dataNascimento ? (
-              <div className="text-red-500 text-xs mt-1">{formik.errors.dataNascimento}</div>
-            ) : null}
-          </div>
-          <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               id="email"
               name="email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.email}
-              autoComplete="off"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              disabled
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
-            {formik.touched.email && formik.errors.email ? (
-              <div className="text-red-500 text-xs mt-1">{formik.errors.email}</div>
-            ) : null}
           </div>
           <div className="mb-4">
-            <label htmlFor="senha" className="block text-sm font-medium text-gray-700">Senha</label>
+            <label htmlFor="code" className="block text-sm font-medium text-gray-700">Código</label>
             <input
-              type="password"
-              id="senha"
-              name="senha"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.senha}
-              autoComplete="off"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              type="text"
+              id="code"
+              name="code"
+              value={formik.values.code}
+              disabled
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
-            {formik.touched.senha && formik.errors.senha ? (
-              <div className="text-red-500 text-xs mt-1">{formik.errors.senha}</div>
-            ) : null}
           </div>
           <div className="flex justify-center gap-4">
             <button
