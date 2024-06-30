@@ -11,7 +11,7 @@ app.use(express.static(path.join(__dirname, '../frontend/build')));
 const router = require('./routes'); 
 app.use('/', router); // Monta as rotas na raiz '/'
 
-// Adiciona essa linha para redirecionar todas as requisições para o index.html
+// redireciona todas as requisições para o index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });

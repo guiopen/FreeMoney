@@ -14,6 +14,7 @@ const mongoURL = process.env.MONGO_URL
 const dbName = "freeMoneyDb";
 let database;
 
+// Conecta ao banco de dados MongoDB
 MongoClient.connect(mongoURL, { useUnifiedTopology: true })
   .then(client => {
     console.log("Conectado ao MongoDB");
@@ -22,6 +23,7 @@ MongoClient.connect(mongoURL, { useUnifiedTopology: true })
   .catch(error => console.error(error));
 
 
+// Rota para buscar nomes - apenas para testes
 router.get('/nomes', (req, res) => {
   const nomes = ["Guilherme", "Olavo", "Marina", "Alexandre", "Jilliard"];
   res.json(nomes);
@@ -31,6 +33,7 @@ router.get('/nomes', (req, res) => {
 router.post('/register_user', async (req, res) => {
   const { name, email, password } = req.body;
 
+  // Validação básica dos campos
   if (!email || !password) {
     return res.status(400).json({ message: 'Email e senha são obrigatórios' });
   }
@@ -63,11 +66,12 @@ router.post('/register_user', async (req, res) => {
   }
 });
 
+// Rota para adicionar uma nova transação (protegida por token)
 router.post('/add_transaction', checkToken, async (req, res) => {
   const { title, date, category, value, expense } = req.body;
   const userId = req.user.id;
 
-  // Basic validation (you can add more checks as needed)
+  // Validação básica dos campos
   if (!title || !date || !category || !value || expense === undefined) {
     return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
   }
@@ -75,18 +79,18 @@ router.post('/add_transaction', checkToken, async (req, res) => {
   try {
     const usersCollection = database.collection('users');
 
-    // Find the user to get their current history and determine the new ID
+    // Busca o usuário para obter seu histórico atual e determinar o novo ID
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
-    // Calculate the new transaction ID (last ID + 1)
+    // Calcula o novo ID da transação (último ID + 1)
     const newId = user.history.length > 0 
       ? user.history[user.history.length - 1].id + 1 
       : 0;
 
-    // Create the new transaction object
+    // Cria o objeto da nova transação
     const newTransaction = {
       id: newId,
       title,
@@ -96,7 +100,7 @@ router.post('/add_transaction', checkToken, async (req, res) => {
       expense,
     };
 
-    // Update the user's history in the database
+    // Atualiza o histórico do usuário no banco de dados
     const result = await usersCollection.updateOne(
       { _id: new ObjectId(userId) },
       { $push: { history: newTransaction } } 
@@ -114,6 +118,7 @@ router.post('/add_transaction', checkToken, async (req, res) => {
   }
 });
 
+// Rota para buscar os dados do usuário logado (protegida por token)
 router.get('/user', checkToken, async (req, res) => {
   try {
     // O ID do usuário está disponível em req.user após a verificação do token
@@ -143,6 +148,7 @@ router.post("/login_user", async (req, res) => {
   const usersCollection = database.collection('users');
   const { email, password } = req.body;
 
+  // Validação básica dos campos
   if (!email || !password) {
       return res.status(422).json({ message: "Email e senha são obrigatórios!" });
   }
@@ -171,7 +177,7 @@ router.post("/login_user", async (req, res) => {
 
 
 
-// Rota privada de teste
+// Rota privada de teste (protegida por token)
 router.get("/test/user/:id", checkToken, async (req, res) => {
   const usersCollection = database.collection('users');
   const id = req.params.id;
@@ -200,6 +206,7 @@ router.get("/test/user/:id", checkToken, async (req, res) => {
 router.get('/friend_history', async (req, res) => {
   const { email, code } = req.query; // Obtém o email e o código da query string
 
+  // Validação básica dos campos
   if (!email || !code) {
     return res.status(400).json({ message: 'Email e código são obrigatórios' });
   }
@@ -211,6 +218,7 @@ router.get('/friend_history', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
+    // Verifica se o código fornecido está correto
     if (user.code !== code) {
       return res.status(401).json({ message: 'Código inválido' });
     }
