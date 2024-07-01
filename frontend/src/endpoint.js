@@ -87,7 +87,7 @@ export const testFriendHistory = async () => {
       body: JSON.stringify(userData),
     });
   };
-  
+
   export const testUpdateUser = async (token) => {
     const updatedData = {
       name: 'marina',
@@ -95,10 +95,10 @@ export const testFriendHistory = async () => {
       currentPassword: '123', // Replace with actual old password
       newPassword: '1234', // Replace with actual new password
     };
-  
+
     try {
       const response = await updateUser(updatedData, token);
-  
+
       if (response.ok) {
         console.log('Dados do usuário atualizados com sucesso!');
       } else {

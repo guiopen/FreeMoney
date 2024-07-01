@@ -3,10 +3,14 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { updateUser } from '../../endpoint';
+import { useAuth } from '../Authentication/AuthContext';
 
 const FieldEditModal = ({ field, userData, closeModal }) => {
+
   const [showPassword, setShowPassword] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const { logout } = useAuth()
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -27,30 +31,37 @@ const FieldEditModal = ({ field, userData, closeModal }) => {
     }),
     onSubmit: async (values) => {
       if (formik.isValid) {
-        const updatedData = { ...userData };
-    
+        const updatedData = {};
+
         if (field === 'password') {
           updatedData.newPassword = values.value;  
           updatedData.currentPassword = values.currentPassword;
-        } else {
-          updatedData[field] = values.value;
+        } else if (field == "name") {
+          updatedData.name = values.value
+          updatedData.currentPassword = values.currentPassword
+          console.log(updatedData)
+        } else if (field == "email") {
+          updatedData.email = values.value
+          updatedData.currentPassword = values.currentPassword
         }
-    
+
         try {
           const token = localStorage.getItem('token');
           const response = await updateUser(updatedData, token);
-          console.log(updatedData)
           if (response.ok) {
             console.log('Dados do usuário atualizados com sucesso!');
+            logout()
           } else {
             const errorData = await response.json();
+            setErrorMessage(errorData.message)
             console.error('Erro ao atualizar dados do usuário:', errorData.message);
           }
         } catch (error) {
+          setErrorMessage("Erro no servidor")
           console.error('Erro na requisição:', error);
         }
       }
-    },    
+    },
   });
 
   useEffect(() => {
@@ -137,6 +148,7 @@ const FieldEditModal = ({ field, userData, closeModal }) => {
               <div className="text-red-500 text-xs mt-1">{formik.errors.currentPassword}</div>
             ) : null}
           </div>
+          {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
           <div className="flex justify-center gap-4">
             <button
               type="button"
