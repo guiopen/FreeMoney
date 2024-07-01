@@ -32,6 +32,7 @@ function ProfileInfo({ userData, openFieldEditModal }) {
         />
       </div>
       <hr className="profile-info-divider" />
+      <p><strong>Código:</strong> {userData.code}</p>
     </div>
   );
 }

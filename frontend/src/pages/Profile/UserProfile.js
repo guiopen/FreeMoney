@@ -11,7 +11,7 @@ function UserProfile() {
   const [activeField, setActiveField] = useState(null);
   const [activeTab, setActiveTab] = useState('perfil');
   const { token } = useAuth();
-  const [userData, setUserData] = useState({ name: '', email: '', password: '' });
+  const [userData, setUserData] = useState({ name: '', email: '', password: '', code: '' });
   const [isFriendSummaryModalOpen, setIsFriendSummaryModalOpen] = useState(false);
   const [friendHistory, setFriendHistory] = useState([]);
 
@@ -19,7 +19,7 @@ function UserProfile() {
     try {
       const data = await fetchUserData(token);
       console.log('Dados do usuário:', data);
-      setUserData({ name: data.name, email: data.email, password: data.password });
+      setUserData({ name: data.name, email: data.email, password: data.password, code: data.code });
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
     }
