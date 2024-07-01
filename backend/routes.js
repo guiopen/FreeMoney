@@ -97,62 +97,41 @@ router.get('/user', checkToken, async (req, res) => {
   }
 });
 
-router.put('/user', checkToken, async (req, res) => {
-  console.log(entrou)
+// Rota para atualizar as informações do usuário
+router.put("/edit_user/:id", checkToken, async (req, res) => {
+  const usersCollection = database.collection('users');
+  const id  = req.user.id;
+  const user = await usersCollection.findOne(
+    { _id: new ObjectId(id) });
+
   try {
-    const userId = req.user.id;
-    const { name, email } = req.body;
-    const usersCollection = database.collection('users');
 
-    const updateData = {};
-    if (name) updateData.name = name;
-    if (email) updateData.email = email;
-
-    const result = await usersCollection.updateOne(
-      { _id: new ObjectId(userId) },
-      { $set: updateData }
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ msg: "Usuário não encontrado!" });
+    if (req.body.name) {
+      user.name = req.body.name;
+    }
+    if (req.body.email) {
+      user.email = req.body.email;
+    }
+    if (req.body.password) {
+      user.password = req.body.password;
     }
 
-    res.status(200).json({ msg: "Informações atualizadas com sucesso!" });
-  } catch (error) {
+    await user.updateOne(user);
+        res.status(200).send({
+            message: "Usuário atualizado com sucesso",
+            user,
+        });
+
+  } 
+  
+  catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Erro ao atualizar informações do usuário" });
   }
 });
 
-router.put('/user/password', checkToken, async (req, res) => {
-  console.log(entrou)
-  try {
-    const userId = req.user.id;
-    const { password } = req.body;
-    const usersCollection = database.collection('users');
 
-    if (!password) {
-      return res.status(400).json({ message: 'Senha é obrigatória' });
-    }
-
-    const hashedPassword = await encryptPassword(password);
-
-    const result = await usersCollection.updateOne(
-      { _id: new ObjectId(userId) },
-      { $set: { password: hashedPassword } }
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ msg: "Usuário não encontrado!" });
-    }
-
-    res.status(200).json({ msg: "Senha atualizada com sucesso!" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: "Erro ao atualizar senha do usuário" });
-  }
-});
-
+// Rota para realizar o login e gerar o token JWT
 router.post("/login_user", async (req, res) => {
   const usersCollection = database.collection('users');
   const { email, password } = req.body;
