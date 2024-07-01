@@ -98,12 +98,12 @@ router.get('/user', checkToken, async (req, res) => {
 });
 
 // Rota para atualizar as informações do usuário
-router.put("/edit_user/:id", checkToken, async (req, res) => {
+router.put("/edit_user/", checkToken, async (req, res) => {
   const usersCollection = database.collection('users');
-  const id = req.user.id;
+  const userId = req.user.id; // Obtém o ID do usuário do token
 
   try {
-    const filter = { _id: new ObjectId(id) };
+    const filter = { _id: new ObjectId(userId) };
     const updateFields = {};
 
     if (req.body.name) {
