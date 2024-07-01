@@ -6,7 +6,7 @@ const { encryptPassword, verifyPassword } = require('./utils/passwordEncryption'
 const { checkToken } = require('./utils/checkToken');
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const ObjectId = require('mongodb').ObjectId;
 
 // Configuração da URL de conexão do MongoDB
