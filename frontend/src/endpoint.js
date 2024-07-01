@@ -90,10 +90,10 @@ export const testFriendHistory = async () => {
   
   export const testUpdateUser = async (token) => {
     const updatedData = {
-      name: 'novissimo4 gt',
-      email: 'g@t.com',
+      name: 'marina',
+      email: 'marina@teste.com',
       currentPassword: '123', // Replace with actual old password
-      newPassword: '123', // Replace with actual new password
+      newPassword: '1234', // Replace with actual new password
     };
   
     try {

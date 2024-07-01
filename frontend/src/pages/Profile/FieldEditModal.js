@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { updateUser } from '../../endpoint';
 
-const FieldEditModal = ({ field, userData, closeModal, updateUser }) => {
+const FieldEditModal = ({ field, userData, closeModal }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 
@@ -27,35 +28,29 @@ const FieldEditModal = ({ field, userData, closeModal, updateUser }) => {
     onSubmit: async (values) => {
       if (formik.isValid) {
         const updatedData = { ...userData };
-
+    
         if (field === 'password') {
-          updatedData.password = values.value;
+          updatedData.newPassword = values.value;  
           updatedData.currentPassword = values.currentPassword;
         } else {
           updatedData[field] = values.value;
         }
-
+    
         try {
-          const response = await fetch('http://localhost:3000/api/update_user', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-            body: JSON.stringify(updatedData),
-          });
-
-          if (!response.ok) {
-            throw new Error('Erro ao atualizar usuário');
+          const token = localStorage.getItem('token');
+          const response = await updateUser(updatedData, token);
+          console.log(updatedData)
+          if (response.ok) {
+            console.log('Dados do usuário atualizados com sucesso!');
+          } else {
+            const errorData = await response.json();
+            console.error('Erro ao atualizar dados do usuário:', errorData.message);
           }
-
-          updateUser(updatedData);
-          closeModal();
         } catch (error) {
-          console.error('Erro ao fazer a requisição:', error.message);
+          console.error('Erro na requisição:', error);
         }
       }
-    },
+    },    
   });
 
   useEffect(() => {
