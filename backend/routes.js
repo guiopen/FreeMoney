@@ -100,33 +100,37 @@ router.get('/user', checkToken, async (req, res) => {
 // Rota para atualizar as informações do usuário
 router.put("/edit_user/:id", checkToken, async (req, res) => {
   const usersCollection = database.collection('users');
-  const id  = req.user.id;
-  const user = await usersCollection.findOne(
-    { _id: new ObjectId(id) });
+  const id = req.user.id;
 
   try {
+    const filter = { _id: new ObjectId(id) };
+    const updateFields = {};
 
     if (req.body.name) {
-      user.name = req.body.name;
+      updateFields.name = req.body.name;
     }
     if (req.body.email) {
-      user.email = req.body.email;
+      updateFields.email = req.body.email;
     }
     if (req.body.password) {
-      user.password = req.body.password;
+      const hashedPassword = await encryptPassword(req.body.password);
+      updateFields.password = hashedPassword;
     }
 
-    await user.updateOne(user);
-        res.status(200).send({
-            message: "Usuário atualizado com sucesso",
-            user,
-        });
+    const updateResult = await usersCollection.updateOne(filter, { $set: updateFields });
 
-  } 
-  
-  catch (error) {
+    if (updateResult.modifiedCount === 0) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    const updatedUser = await usersCollection.findOne(filter, { projection: { password: 0 } });
+    res.status(200).json({
+      message: "Usuário atualizado com sucesso",
+      user: updatedUser,
+    });
+  } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Erro ao atualizar informações do usuário" });
+    res.status(500).json({ message: "Erro ao atualizar informações do usuário" });
   }
 });
 
