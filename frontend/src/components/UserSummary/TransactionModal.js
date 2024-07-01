@@ -42,7 +42,7 @@ const TransactionForms = ({closeModal, transactions, setTransactions}) => {
                     title: values.title,
                     date: new Date(),
                     category: values.category,
-                    value: values.value,
+                    value: Math.abs(values.value),
                     expense: (values.type == "expense") ? true : false
                 }
                 try {
