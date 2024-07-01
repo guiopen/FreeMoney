@@ -4,7 +4,10 @@
 
 FreeMoney é uma aplicação web para controle financeiro pessoal que permite aos usuários gerenciar suas receitas e despesas de forma intuitiva e eficiente. Com recursos como visualização avançada do histórico financeiro, simulação de empréstimos e investimentos e a opção de compartilhar dados com amigos ou familiares, o Free Money oferece uma solução completa para organizar suas finanças. Feita para a disciplina de Programação WEB da ufsc, inspirado pelo aplicativo android OinKoin: https://f-droid.org/pt/packages/com.github.emavgl.piggybankpro
 
-![freemoney-small](https://github.com/guiopen/FreeMoney/assets/94094527/52724a27-d1c2-413f-bc86-13c9a39b090f)
+![Captura de tela de 2024-07-01 02-21-37](https://github.com/guiopen/FreeMoney/assets/94094527/ab7b20dc-f610-457f-b310-f55cdfe50b86)
+![Captura de tela de 2024-07-01 03-04-20](https://github.com/guiopen/FreeMoney/assets/94094527/31d010f4-5aaf-496c-8f08-f61374e04af2)
+![Captura de tela de 2024-07-01 02-21-00](https://github.com/guiopen/FreeMoney/assets/94094527/625adfa5-982b-42fc-9555-b6664dc015e4)
+![Captura de tela de 2024-07-01 02-21-23](https://github.com/guiopen/FreeMoney/assets/94094527/6d3ee67e-a9b7-4148-9be8-fedabf08ad91)
 
 ## Funcionalidades
 
