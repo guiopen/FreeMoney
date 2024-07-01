@@ -51,9 +51,12 @@ export default function TransactionHistories({ transactions, setTransactions }) 
           </span>
         </div>
         <span className="flex-grow"></span>
-        <button className="bg-[#3298ab] text-white px-2 py-1 rounded" onClick={() => setOpenModal(true)}>
-          Adicionar Transação
-        </button>
+        {setTransactions ?
+          <button className="bg-[#3298ab] text-white px-2 py-1 rounded" onClick={() => setOpenModal(true)}>
+            Adicionar Transação
+          </button> :
+          null
+        }
       </div>
       {openModal
       ? <TransactionModal transactions={transactions} setTransactions={setTransactions} closeModal={() => setOpenModal(false)}/>

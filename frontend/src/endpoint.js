@@ -58,24 +58,6 @@ export const fetchFriendHistory = (email, code) => {
     });
 };
 
-export const testFriendHistory = async () => {
-    const email = 't4@t.com';
-    const code = '6795';
-
-    try {
-      const response = await fetchFriendHistory(email, code);
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Histórico do amigo:', data.history); 
-      } else {
-        const errorData = await response.json();
-        console.error('Erro ao buscar histórico:', errorData.message);
-      }
-    } catch (error) {
-      console.error('Erro na requisição:', error);
-    }
-  };
 
 export const addTransaction = async (transactionData, token) => {
   return fetch('/add_transaction', {
@@ -87,3 +69,13 @@ export const addTransaction = async (transactionData, token) => {
     body: JSON.stringify(transactionData)
   });
 };
+  export const updateUser = async (userData, token) => {
+    return fetch('/user', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(userData),
+    });
+  };
