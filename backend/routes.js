@@ -9,8 +9,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const ObjectId = require('mongodb').ObjectId;
 
-// Configuração da URL de conexão do MongoDB
-const mongoURL = process.env.MONGO_URL
+const mongoURL = process.env.MONGO_URL;
 const dbName = "freeMoneyDb";
 let database;
 
@@ -21,9 +20,8 @@ MongoClient.connect(mongoURL, { useUnifiedTopology: true })
   })
   .catch(error => console.error(error));
 
-
 router.get('/nomes', (req, res) => {
-  const nomes = ["Guilherme", "Olavo", "Marina", "Alexandre", "Jilliard"];
+  const nomes = ["Guilherme", "Olavo", "Marina", "Alexandre", "Jiliard"];
   res.json(nomes);
 });
 
@@ -44,8 +42,8 @@ const fakeTransactions = [
     value: 1789.2,
     expense: false,
   }
-]
-// Rota para registrar um novo usuário
+];
+
 router.post('/register_user', async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -55,22 +53,19 @@ router.post('/register_user', async (req, res) => {
 
   try {
     const usersCollection = database.collection('users');
-
-    // Verificar se o email já está cadastrado
-    const existingUser = await usersCollection.findOne({ email: email });
+    const existingUser = await usersCollection.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'Email já cadastrado' });
     }
 
-    // Cadastrar usuario
-    const userCode = generateRandomNumber()
+    const userCode = generateRandomNumber();
     const hashedPassword = await encryptPassword(password);
     const newUser = {
-      name: name,
-      email: email,
+      name,
+      email,
       password: hashedPassword,
       code: userCode,
-      history: fakeTransactions
+      history: fakeTransactions,
     };
     await usersCollection.insertOne(newUser);
 
@@ -83,12 +78,9 @@ router.post('/register_user', async (req, res) => {
 
 router.get('/user', checkToken, async (req, res) => {
   try {
-    // O ID do usuário está disponível em req.user após a verificação do token
-    const userId = req.user.id; 
-
+    const userId = req.user.id;
     const usersCollection = database.collection('users');
 
-    // Busca o usuário pelo ID, excluindo o campo 'password' da resposta
     const user = await usersCollection.findOne(
       { _id: new ObjectId(userId) },
       { projection: { password: 0 } }
@@ -105,25 +97,19 @@ router.get('/user', checkToken, async (req, res) => {
   }
 });
 
-// Rota para atualizar as informações do usuário
 router.put('/user', checkToken, async (req, res) => {
-  const usersCollection = database.collection('users');
-  const { id } = req.params;
-  const { name, email, password } = req.body;
-
+  console.log(entrou)
   try {
-    const ObjectId = require('mongodb').ObjectId;
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ msg: "ID inválido!" });
-    }
+    const userId = req.user.id;
+    const { name, email } = req.body;
+    const usersCollection = database.collection('users');
 
     const updateData = {};
     if (name) updateData.name = name;
     if (email) updateData.email = email;
-    if (password) updateData.password = await encryptPassword(password);
 
     const result = await usersCollection.updateOne(
-      { _id: new ObjectId(id) },
+      { _id: new ObjectId(userId) },
       { $set: updateData }
     );
 
@@ -138,51 +124,71 @@ router.put('/user', checkToken, async (req, res) => {
   }
 });
 
-// Rota para realizar o login e gerar o token JWT
+router.put('/user/password', checkToken, async (req, res) => {
+  console.log(entrou)
+  try {
+    const userId = req.user.id;
+    const { password } = req.body;
+    const usersCollection = database.collection('users');
+
+    if (!password) {
+      return res.status(400).json({ message: 'Senha é obrigatória' });
+    }
+
+    const hashedPassword = await encryptPassword(password);
+
+    const result = await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: { password: hashedPassword } }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ msg: "Usuário não encontrado!" });
+    }
+
+    res.status(200).json({ msg: "Senha atualizada com sucesso!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Erro ao atualizar senha do usuário" });
+  }
+});
+
 router.post("/login_user", async (req, res) => {
   const usersCollection = database.collection('users');
   const { email, password } = req.body;
 
   if (!email || !password) {
-      return res.status(422).json({ message: "Email e senha são obrigatórios!" });
+    return res.status(422).json({ message: "Email e senha são obrigatórios!" });
   }
 
-  // Verifica se o email já está cadastrado
-  const user = await usersCollection.findOne({ email: email });
+  const user = await usersCollection.findOne({ email });
   if (!user) {
-      return res.status(404).json({ message: "Usuário não encontrado!" });
+    return res.status(404).json({ message: "Usuário não encontrado!" });
   }
 
-  // Verifica se a senha bate
   const checkPassword = await bcrypt.compare(password, user.password);
   if (!checkPassword) {
-      return res.status(422).json({ message: "Senha inválida" });
+    return res.status(422).json({ message: "Senha inválida" });
   }
 
   try {
-      // Define o tempo máximo de sessão para 3 horas
-      const token = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: '3h' });
-      res.status(200).json({ token, message: "Autenticação realizada com sucesso!" });
+    const token = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: '3h' });
+    res.status(200).json({ token, message: "Autenticação realizada com sucesso!" });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: error });
+    console.error(error);
+    res.status(500).json({ message: error });
   }
 });
 
-
-
-// Rota privada de teste
 router.get("/test/user/:id", checkToken, async (req, res) => {
   const usersCollection = database.collection('users');
   const id = req.params.id;
 
   try {
-    // Verifica se o ID é válido
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ msg: "ID inválido!" });
     }
 
-    // Busca o usuário pelo ID
     const user = await usersCollection.findOne({ _id: new ObjectId(id) }, { projection: { password: 0 } });
 
     if (!user) {
@@ -196,9 +202,8 @@ router.get("/test/user/:id", checkToken, async (req, res) => {
   }
 });
 
-// Rota para pegar o histórico de outro usuario
 router.get('/friend_history', async (req, res) => {
-  const { email, code } = req.query; // Obtém o email e o código da query string
+  const { email, code } = req.query;
 
   if (!email || !code) {
     return res.status(400).json({ message: 'Email e código são obrigatórios' });
@@ -207,7 +212,7 @@ router.get('/friend_history', async (req, res) => {
   try {
     const usersCollection = database.collection('users');
 
-    const user = await usersCollection.findOne({ email: email });
+    const user = await usersCollection.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
@@ -215,12 +220,11 @@ router.get('/friend_history', async (req, res) => {
       return res.status(401).json({ message: 'Código inválido' });
     }
 
-    res.status(200).json({ history: user.history }); 
+    res.status(200).json({ history: user.history });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Erro ao buscar histórico de transações' });
   }
 });
-
 
 module.exports = router;
