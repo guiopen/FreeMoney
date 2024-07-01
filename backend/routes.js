@@ -106,37 +106,38 @@ router.get('/user', checkToken, async (req, res) => {
 });
 
 // Rota para atualizar as informações do usuário
-router.put('/user', checkToken, async (req, res) => {
+router.put("/edit_user/:id", checkToken, async (req, res) => {
   const usersCollection = database.collection('users');
-  const { id } = req.params;
-  const { name, email, password } = req.body;
+  const id  = req.user.id;
+  const user = await usersCollection.findOne(
+    { _id: new ObjectId(id) });
 
   try {
-    const ObjectId = require('mongodb').ObjectId;
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ msg: "ID inválido!" });
+
+    if (req.body.name) {
+      user.name = req.body.name;
+    }
+    if (req.body.email) {
+      user.email = req.body.email;
+    }
+    if (req.body.password) {
+      user.password = req.body.password;
     }
 
-    const updateData = {};
-    if (name) updateData.name = name;
-    if (email) updateData.email = email;
-    if (password) updateData.password = await encryptPassword(password);
+    await user.updateOne(user);
+        res.status(200).send({
+            message: "Usuário atualizado com sucesso",
+            user,
+        });
 
-    const result = await usersCollection.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: updateData }
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ msg: "Usuário não encontrado!" });
-    }
-
-    res.status(200).json({ msg: "Informações atualizadas com sucesso!" });
-  } catch (error) {
+  } 
+  
+  catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Erro ao atualizar informações do usuário" });
   }
 });
+
 
 // Rota para realizar o login e gerar o token JWT
 router.post("/login_user", async (req, res) => {
