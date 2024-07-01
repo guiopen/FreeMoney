@@ -12,6 +12,7 @@ function UserProfile() {
   const [activeTab, setActiveTab] = useState('perfil');
   const { token } = useAuth();
   const [userData, setUserData] = useState({ name: '', email: '', password: '' });
+  const [isFriendSummaryModalOpen, setIsFriendSummaryModalOpen] = useState(false);
   const [friendHistory, setFriendHistory] = useState([]);
 
   const handleFetchUserData = async () => {
@@ -28,6 +29,10 @@ function UserProfile() {
     handleFetchUserData();
   }, [token]);
 
+  const openFriendSummaryModal = () => {
+    setIsFriendSummaryModalOpen(true);
+  };
+
   const openFieldEditModal = (field) => {
     setActiveField(field);
     setIsFieldEditModalOpen(true);
@@ -36,6 +41,7 @@ function UserProfile() {
   const closeModal = () => {
     setIsFieldEditModalOpen(false);
     setActiveField(null);
+    setIsFriendSummaryModalOpen(false);
   };
 
   const switchToProfile = () => {
@@ -81,7 +87,7 @@ function UserProfile() {
           {activeTab === 'perfil' ? (
             <ProfileInfo userData={userData} openFieldEditModal={openFieldEditModal} />
           ) : (
-            <AddFriend userData={userData} openFriendSummaryModal={FriendSummaryModal} setFriendHistory={setFriendHistory} />
+            <AddFriend userData={userData} openFriendSummaryModal={openFriendSummaryModal} setFriendHistory={setFriendHistory} />
           )}
         </div>
       </div>
@@ -94,6 +100,7 @@ function UserProfile() {
           updateUser={updateUser}
         />
       )}
+      {isFriendSummaryModalOpen && <FriendSummaryModal closeModal={closeModal} history={friendHistory} />}
     </div>
   );
 }
