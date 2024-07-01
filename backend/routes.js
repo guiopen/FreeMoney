@@ -97,88 +97,71 @@ router.get('/user', checkToken, async (req, res) => {
   }
 });
 
-router.put('/update_user', checkToken, async (req, res) => {
-  console.log("TENTARAM ATUALIZAR")
+// Rota para atualizar os dados do usuário
+router.put('/user', checkToken, async (req, res) => {
+  // Obtém o ID do usuário a partir do token JWT decodificado (verificar middleware checkToken)
   const userId = req.user.id;
-  const { name, email, currentPassword, newPassword } = req.body;
+
+  // Extrai os dados enviados no corpo da requisição
+  const { name, email, newPassword, currentPassword } = req.body;
 
   try {
+    // Obtém a coleção 'users' do banco de dados
     const usersCollection = database.collection('users');
+
+    // Busca o usuário no banco de dados pelo ID
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
 
+    // Se o usuário não for encontrado, retorna um erro 404 (Not Found)
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
-    if (newPassword) {
-      const isPasswordValid = await verifyPassword(currentPassword, user.password);
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Senha atual incorreta' });
-      }
+    // Verifica se a senha atual fornecida está correta
+    const isPasswordValid = await verifyPassword(currentPassword, user.password);
 
-      const hashedNewPassword = await encryptPassword(newPassword);
-      await usersCollection.updateOne(
-        { _id: new ObjectId(userId) },
-        { $set: { password: hashedNewPassword } }
-      );
+    // Se a senha atual estiver incorreta, retorna um erro 401 (Unauthorized)
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Senha atual incorreta' });
     }
 
+    // Cria um objeto para armazenar os campos a serem atualizados
     const updateFields = {};
+
+    // Verifica se um novo nome foi fornecido e adiciona ao objeto de atualização
     if (name) {
       updateFields.name = name;
     }
+
+    // Verifica se um novo email foi fornecido e adiciona ao objeto de atualização
     if (email) {
       updateFields.email = email;
     }
 
+    // Verifica se uma nova senha foi fornecida e adiciona ao objeto de atualização
+    if (newPassword) {
+      // Criptografa a nova senha
+      const hashedNewPassword = await encryptPassword(newPassword);
+      updateFields.password = hashedNewPassword;
+    }
+
+    // Se houver campos a serem atualizados
     if (Object.keys(updateFields).length > 0) {
+      // Atualiza os dados do usuário no banco de dados
       await usersCollection.updateOne(
         { _id: new ObjectId(userId) },
         { $set: updateFields }
       );
     }
 
+    // Retorna uma resposta de sucesso (200 OK) com uma mensagem
     res.status(200).json({ message: 'Dados do usuário atualizados com sucesso' });
   } catch (error) {
+    // Em caso de erro, loga o erro no console
     console.error(error);
+
+    // Retorna uma resposta de erro interno do servidor (500 Internal Server Error)
     res.status(500).json({ message: 'Erro ao atualizar dados do usuário' });
-  }
-});
-
-// Rota para atualizar as informações do usuário
-router.put("/edit_user/", checkToken, async (req, res) => {
-  const usersCollection = database.collection('users');
-  const userId = req.user.id; // Obtém o ID do usuário do token
-
-  try {
-    const filter = { _id: new ObjectId(userId) };
-    const updateFields = {};
-
-    if (req.body.name) {
-      updateFields.name = req.body.name;
-    }
-    if (req.body.email) {
-      updateFields.email = req.body.email;
-    }
-    if (req.body.password) {
-      const hashedPassword = await encryptPassword(req.body.password);
-      updateFields.password = hashedPassword;
-    }
-
-    const updateResult = await usersCollection.updateOne(filter, { $set: updateFields });
-
-    if (updateResult.modifiedCount === 0) {
-      return res.status(404).json({ message: 'Usuário não encontrado' });
-    }
-
-    const updatedUser = await usersCollection.findOne(filter, { projection: { password: 0 } });
-    res.status(200).json({
-      message: "Usuário atualizado com sucesso",
-      user: updatedUser,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Erro ao atualizar informações do usuário" });
   }
 });
 

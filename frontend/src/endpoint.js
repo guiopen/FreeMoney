@@ -78,7 +78,7 @@ export const testFriendHistory = async () => {
   };
 
   export const updateUser = async (userData, token) => {
-    return fetch('/update_user', {
+    return fetch('/user', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -90,10 +90,10 @@ export const testFriendHistory = async () => {
   
   export const testUpdateUser = async (token) => {
     const updatedData = {
-      name: 'novissimo gt',
-      email: 'newg@t.com',
+      name: 'novissimo4 gt',
+      email: 'g@t.com',
       currentPassword: '123', // Replace with actual old password
-      newPassword: '1234', // Replace with actual new password
+      newPassword: '123', // Replace with actual new password
     };
   
     try {
