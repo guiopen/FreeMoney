@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import LineChart from "../../components/UserSummary/LineChart";
 import PizzaChart from "../../components/UserSummary/PizzaChart";
 import TransactionHistories from "../../components/UserSummary/TransactionHistories";
-import { fetchUserData } from "../../endpoint";
+import { fetchUserData, testUpdateUser } from "../../endpoint";
 import { useAuth } from "../Authentication/AuthContext";
+import { Button } from "@headlessui/react";
 
 export default function Summary({ userHistory }) {
-
+  const { token } = useAuth()
   return (
     <div className="bg-[#D8FDFF] w-full min-h-[calc(100vh-96px)]">
+      <Button onClick={() => testUpdateUser(token)}>XXXXXXXXXXXXXXX</Button>
       <div className="w-full py-12 px-4 lg:px-8
         flex flex-col lg:flex-row justify-center gap-8
         max-w-[1024px] mx-auto

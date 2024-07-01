@@ -97,6 +97,54 @@ router.get('/user', checkToken, async (req, res) => {
   }
 });
 
+router.put('/update_user', checkToken, async (req, res) => {
+  console.log("TENTARAM ATUALIZAR")
+  const userId = req.user.id;
+  const { name, email, currentPassword, newPassword } = req.body;
+
+  try {
+    const usersCollection = database.collection('users');
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    if (newPassword) {
+      const isPasswordValid = await verifyPassword(currentPassword, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: 'Senha atual incorreta' });
+      }
+
+      const hashedNewPassword = await encryptPassword(newPassword);
+      await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $set: { password: hashedNewPassword } }
+      );
+    }
+
+    const updateFields = {};
+    if (name) {
+      updateFields.name = name;
+    }
+    if (email) {
+      updateFields.email = email;
+    }
+
+    if (Object.keys(updateFields).length > 0) {
+      await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $set: updateFields }
+      );
+    }
+
+    res.status(200).json({ message: 'Dados do usuário atualizados com sucesso' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao atualizar dados do usuário' });
+  }
+});
+
 // Rota para atualizar as informações do usuário
 router.put("/edit_user/:id", checkToken, async (req, res) => {
   const usersCollection = database.collection('users');

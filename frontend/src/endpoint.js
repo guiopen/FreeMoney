@@ -76,3 +76,36 @@ export const testFriendHistory = async () => {
       console.error('Erro na requisição:', error);
     }
   };
+
+  export const updateUser = async (userData, token) => {
+    return fetch('/update_user', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(userData),
+    });
+  };
+  
+  export const testUpdateUser = async (token) => {
+    const updatedData = {
+      name: 'novissimo gt',
+      email: 'newg@t.com',
+      currentPassword: '123', // Replace with actual old password
+      newPassword: '1234', // Replace with actual new password
+    };
+  
+    try {
+      const response = await updateUser(updatedData, token);
+  
+      if (response.ok) {
+        console.log('Dados do usuário atualizados com sucesso!');
+      } else {
+        const errorData = await response.json();
+        console.error('Erro ao atualizar dados do usuário:', errorData.message);
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+    }
+  };
