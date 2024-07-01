@@ -12,7 +12,7 @@ import { fetchUserData } from './endpoint.js';
 
 
 const AppContent = () => {
-  const { token } = useAuth()
+  const { token, isLoggedIn } = useAuth()
   const [userHistory, setUserHistory] = useState([])
 
   const handleFetchUserData = async () => {
@@ -25,9 +25,8 @@ const AppContent = () => {
     }
   };
 
-  useEffect(() => {handleFetchUserData()}, []);
+  useEffect(() => {setUserHistory([]); handleFetchUserData()}, [token, isLoggedIn]);
 
-  const { isLoggedIn } = useAuth();
   if (isLoggedIn) {
     return (
       <>

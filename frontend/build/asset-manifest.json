@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.348af505.css",
-    "main.js": "/static/js/main.c76952db.js",
+    "main.js": "/static/js/main.be54f809.js",
     "static/js/453.8ab44547.chunk.js": "/static/js/453.8ab44547.chunk.js",
     "static/media/FreeMoney-logo.png": "/static/media/FreeMoney-logo.38047b409fe6df6e9629.png",
     "index.html": "/index.html",
     "main.348af505.css.map": "/static/css/main.348af505.css.map",
-    "main.c76952db.js.map": "/static/js/main.c76952db.js.map",
+    "main.be54f809.js.map": "/static/js/main.be54f809.js.map",
     "453.8ab44547.chunk.js.map": "/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.348af505.css",
-    "static/js/main.c76952db.js"
+    "static/js/main.be54f809.js"
   ]
 }
