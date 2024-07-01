@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import ProfileInfo from './ProfileInfo';
 import AddFriend from './AddFriend';
-import EditModal from './EditModal';
+import FieldEditModal from './FieldEditModal';
 import FriendSummaryModal from './FriendSummaryModal';
 import { fetchUserData } from "../../endpoint";
 import { useAuth } from "../Authentication/AuthContext";
 
 function UserProfile() {
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isFriendSummaryModalOpen, setIsFriendSummaryModalOpen] = useState(false);
+  const [isFieldEditModalOpen, setIsFieldEditModalOpen] = useState(false);
+  const [activeField, setActiveField] = useState(null);
   const [activeTab, setActiveTab] = useState('perfil');
   const { token } = useAuth();
-  const [userData, setUserData] = useState({ name: '', email: '', code: '' });
+  const [userData, setUserData] = useState({ name: '', email: '', password: '' });
   const [friendHistory, setFriendHistory] = useState([]);
 
   const handleFetchUserData = async () => {
     try {
       const data = await fetchUserData(token);
       console.log('Dados do usuário:', data);
-      setUserData({ name: data.name, email: data.email, code: data.code });
+      setUserData({ name: data.name, email: data.email, password: data.password });
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
     }
@@ -28,17 +28,14 @@ function UserProfile() {
     handleFetchUserData();
   }, [token]);
 
-  const openEditModal = () => {
-    setIsEditModalOpen(true);
-  };
-
-  const openFriendSummaryModal = () => {
-    setIsFriendSummaryModalOpen(true);
+  const openFieldEditModal = (field) => {
+    setActiveField(field);
+    setIsFieldEditModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsEditModalOpen(false);
-    setIsFriendSummaryModalOpen(false);
+    setIsFieldEditModalOpen(false);
+    setActiveField(null);
   };
 
   const switchToProfile = () => {
@@ -82,15 +79,21 @@ function UserProfile() {
             </button>
           </div>
           {activeTab === 'perfil' ? (
-            <ProfileInfo userData={userData} openEditModal={openEditModal} />
+            <ProfileInfo userData={userData} openFieldEditModal={openFieldEditModal} />
           ) : (
-            <AddFriend userData={userData} openFriendSummaryModal={openFriendSummaryModal} setFriendHistory={setFriendHistory} />
+            <AddFriend userData={userData} openFriendSummaryModal={FriendSummaryModal} setFriendHistory={setFriendHistory} />
           )}
         </div>
       </div>
 
-      {isEditModalOpen && <EditModal userData={userData} closeModal={closeModal} updateUser={updateUser} />}
-      {isFriendSummaryModalOpen && <FriendSummaryModal closeModal={closeModal} history={friendHistory} />}
+      {isFieldEditModalOpen && (
+        <FieldEditModal 
+          field={activeField}
+          userData={userData}
+          closeModal={closeModal}
+          updateUser={updateUser}
+        />
+      )}
     </div>
   );
 }
